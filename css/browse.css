@@ -1,0 +1,84 @@
+/* ============================================================
+   BROWSE BAR
+   Floors are a fixed segmented control — all six always visible.
+   The active pill is a single element that slides between
+   segments and changes colour on the way, so CC → GF reads as
+   one movement rather than two states.
+   ============================================================ */
+
+.browse {
+  position: sticky; top: var(--header-h); z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 9px 0 10px;
+  max-height: 160px; opacity: 1; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1),
+              opacity 0.24s ease,
+              padding 0.4s cubic-bezier(.4,0,.2,1);
+}
+.browse-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── Floor segmented control ────────────────── */
+.seg {
+  position: relative; display: flex; gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 3px;
+}
+.seg-ind {
+  position: absolute; top: 3px; left: 0; height: 30px;
+  border-radius: var(--r-sm); background: var(--ink);
+  pointer-events: none;
+  transition: transform 0.42s cubic-bezier(.22,1,.36,1),
+              width 0.42s cubic-bezier(.22,1,.36,1),
+              background-color 0.34s ease;
+}
+.seg.is-ready .seg-ind { will-change: transform, width; }
+
+.seg-btn {
+  position: relative; z-index: 1;
+  flex: 1 1 0; min-width: 0;
+  height: 30px; border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+  color: var(--ink-2);
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.26s ease;
+}
+.seg-btn.is-on { color: #fff; }
+.seg-btn.is-on[data-floor="gf"] { color: var(--f-gf-ink); }
+
+/* ── Category trigger ───────────────────────── */
+/* Sized to its label, not stretched across the bar */
+.browse-row { display: flex; margin-top: 8px; }
+
+.cat-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  max-width: 100%;
+  height: 32px; padding: 0 11px 0 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: 12.5px; font-weight: 700; color: var(--ink);
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.cat-trigger:active { transform: scale(0.99); }
+.cat-trigger.is-set { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
+.cat-trigger-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--muted); transition: color 0.2s ease; }
+.cat-trigger.is-set .cat-trigger-icon { color: var(--accent); }
+.cat-trigger-label {
+  min-width: 0; text-align: left;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cat-trigger-chev {
+  width: 12px; height: 12px; flex-shrink: 0; color: var(--muted-2);
+  transition: color 0.2s ease, transform 0.26s cubic-bezier(.22,1,.36,1);
+}
+.cat-trigger.is-set .cat-trigger-chev { color: var(--accent); }
+.cat-trigger[aria-expanded="true"] .cat-trigger-chev { transform: rotate(180deg); }
+
+/* ── Search mode: filters step aside ────────── */
+body.is-searching .browse {
+  max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+  border-bottom-color: transparent; pointer-events: none;
+}

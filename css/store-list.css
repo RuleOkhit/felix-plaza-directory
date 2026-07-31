@@ -1,0 +1,85 @@
+/* ============================================================
+   STORE LIST
+   Grouped cards on the cream page. Filter changes cross-fade and
+   the container animates its height, so the page below never
+   snaps to a new length.
+   ============================================================ */
+
+.directory { padding: 14px 0 24px; }
+
+/* ── Group ──────────────────────────────────── */
+.group { margin-bottom: 18px; }
+.group:last-child { margin-bottom: 0; }
+
+.group-head { padding: 0 var(--gutter); margin-bottom: 7px; }
+.group-title {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+
+.group-card {
+  margin: 0 var(--gutter);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+/* ── Row ────────────────────────────────────── */
+.store-row {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 46px; padding: 8px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 0.16s ease;
+}
+.store-row:last-child { border-bottom: none; }
+.store-row:active { background: var(--surface-sunk); }
+
+.store-name {
+  flex: 1; min-width: 0;
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  letter-spacing: 0.005em;
+}
+/* Second line, search results only */
+.store-meta {
+  display: block; margin-top: 2px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted-2);
+}
+
+/* ── Filter / search transitions ────────────────
+   `is-out`  content fades before it's replaced
+   `is-sizing` container animates between heights
+   `is-anim`  groups settle in, gently staggered   */
+.directory { transition: opacity 0.16s ease; }
+.directory.is-out { opacity: 0; }
+.directory.is-sizing {
+  overflow: hidden;
+  transition: height 0.44s cubic-bezier(.22,1,.36,1), opacity 0.26s ease;
+}
+
+@keyframes groupIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.directory.is-anim .group { animation: groupIn 0.38s cubic-bezier(.22,1,.36,1) both; }
+.directory.is-anim .group:nth-child(1)   { animation-delay: 0.00s; }
+.directory.is-anim .group:nth-child(2)   { animation-delay: 0.04s; }
+.directory.is-anim .group:nth-child(3)   { animation-delay: 0.08s; }
+.directory.is-anim .group:nth-child(4)   { animation-delay: 0.11s; }
+.directory.is-anim .group:nth-child(n+5) { animation-delay: 0.14s; }
+
+/* ── Empty state ────────────────────────────── */
+.empty {
+  margin: 8px var(--gutter) 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 34px 24px 30px; text-align: center;
+}
+.empty-icon { width: 34px; height: 34px; margin: 0 auto 12px; color: var(--muted-2); }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.empty-text { font-size: 12.5px; font-weight: 500; color: var(--muted); line-height: 1.5; margin-bottom: 18px; }
+
+/* ── Search mode ────────────────────────────── */
+body.is-searching .directory { padding-top: 16px; }

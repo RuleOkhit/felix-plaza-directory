@@ -1,0 +1,88 @@
+/* ============================================================
+   CATEGORY SHEET
+   All 18 categories at once, with counts, instead of a pill rail
+   you have to scrub sideways through.
+   ============================================================ */
+
+.sheet-root {
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none;
+}
+.sheet-root.is-open { pointer-events: auto; }
+
+.sheet-scrim {
+  position: absolute; inset: 0;
+  background: rgba(26, 16, 53, 0.38);
+  opacity: 0; transition: opacity 0.26s ease;
+}
+.sheet-root.is-open .sheet-scrim { opacity: 1; }
+
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  max-width: var(--page-max); margin: 0 auto;
+  background: var(--surface);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  box-shadow: var(--shadow-up);
+  max-height: 76vh; display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+}
+.sheet-root.is-open .sheet { transform: none; }
+
+.sheet-grip {
+  width: 36px; height: 4px; border-radius: 3px;
+  background: rgba(26, 16, 53, 0.14);
+  margin: 9px auto 0; flex-shrink: 0;
+}
+
+.sheet-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px var(--gutter) 11px;
+  border-bottom: 1px solid var(--line-soft); flex-shrink: 0;
+}
+.sheet-title {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink);
+}
+.sheet-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface-sunk); color: var(--ink-2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sheet-close svg { width: 12px; height: 12px; }
+.sheet-close:active { transform: scale(0.92); }
+
+.sheet-body {
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 12px var(--gutter) calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+.sheet-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.sheet-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 11px; border-radius: var(--r-md);
+  background: var(--surface); border: 1px solid var(--line);
+  text-align: left; min-width: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.sheet-item--wide { grid-column: 1 / -1; }
+.sheet-item:active { transform: scale(0.98); }
+.sheet-item.is-on {
+  border-color: var(--accent); background: var(--accent-soft);
+}
+
+.sheet-item-icon { width: 16px; height: 16px; flex-shrink: 0; color: var(--muted); }
+.sheet-item.is-on .sheet-item-icon { color: var(--accent); }
+.sheet-item-label {
+  flex: 1; min-width: 0;
+  font-size: 12.5px; font-weight: 700; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sheet-item.is-on .sheet-item-label { color: var(--accent-deep); }
+
+/* A category with nothing on the selected floor stays in place but
+   reads as unavailable — better than silently vanishing. */
+.sheet-item.is-empty { opacity: 0.38; }

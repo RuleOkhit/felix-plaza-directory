@@ -1,0 +1,53 @@
+/* ============================================================
+   OPENING SOON — a quiet strip above the header.
+   Light, not a dark gradient bar. Motion is functional: the
+   names scroll because they don't all fit, and it stops on
+   hover so you can read one.
+   ============================================================ */
+
+.ticker {
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+.ticker-inner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px var(--gutter);
+}
+
+.ticker-label {
+  flex-shrink: 0;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent-deep);
+  white-space: nowrap;
+}
+.ticker-rule {
+  flex-shrink: 0; width: 1px; height: 11px;
+  background: rgba(117, 45, 233, 0.25);
+}
+
+.ticker-mask {
+  flex: 1; min-width: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+}
+.ticker-track {
+  display: flex; align-items: center; width: max-content;
+  animation: tickerScroll 26s linear infinite;
+}
+.ticker-mask:hover .ticker-track,
+.ticker-mask:focus-within .ticker-track { animation-play-state: paused; }
+
+@keyframes tickerScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.ticker-item {
+  flex-shrink: 0; padding: 0 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--ink); white-space: nowrap; line-height: 1;
+}
+.ticker-sep {
+  flex-shrink: 0; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--muted-2);
+}

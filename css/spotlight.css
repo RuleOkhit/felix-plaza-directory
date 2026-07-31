@@ -1,0 +1,126 @@
+/* ============================================================
+   STORE SPOTLIGHT
+   One featured store at a time, on a horizontal track. Each card
+   carries its own floor's colour — top rule, logo tint, floor
+   tag and the progress bar all move together.
+   ============================================================ */
+
+.spotlight {
+  padding: 16px 0 6px;
+  max-height: 640px; opacity: 1; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1),
+              opacity 0.24s ease,
+              padding 0.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Progress bars ──────────────────────────────
+   The active bar fills over the dwell time and the
+   deck advances the instant it's full. Hold the
+   card and the fill freezes where it is.          */
+.spot-bars { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+
+.spot-bar {
+  position: relative; padding: 0;
+  width: 10px; height: 4px; border-radius: 2px;
+  background: rgba(26, 16, 53, 0.13);
+  transition: width 0.44s cubic-bezier(.22,1,.36,1),
+              background-color 0.3s ease;
+}
+/* Tap target, without changing the drawn size */
+.spot-bar::after { content: ''; position: absolute; inset: -12px -3px; }
+.spot-bar.is-on { width: 28px; }
+
+.spot-bar-fill {
+  display: block; position: absolute; inset: 0; border-radius: 2px;
+  background: var(--fc, var(--accent));
+  transform: scaleX(0); transform-origin: left center;
+}
+
+/* ── Track ──────────────────────────────────────
+   Stage clips; the 4px side margin plus the slide's
+   own padding gives the card shadow room to sit in. */
+.spot-stage {
+  position: relative; margin: 0 4px; overflow: hidden;
+  touch-action: pan-y; outline: none;
+  transition: height 0.44s cubic-bezier(.22,1,.36,1);
+}
+.spot-track {
+  display: flex; align-items: flex-start;
+  will-change: transform;
+  transition: transform 0.52s cubic-bezier(.22,1,.36,1);
+}
+.spot-slide {
+  flex: 0 0 100%; min-width: 0;
+  padding: 0 12px 10px;
+  opacity: 0.4;
+  transition: opacity 0.42s ease;
+}
+.spot-slide.is-on { opacity: 1; }
+
+/* ── Card ───────────────────────────────────── */
+.spot-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.spot-card::before { content: ''; display: block; height: 3px; background: var(--fc); }
+
+.spot-body { padding: 14px 15px 15px; }
+
+.spot-eyebrow {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted-2);
+  margin-bottom: 11px;
+}
+
+.spot-store { display: flex; align-items: center; gap: 12px; }
+
+.spot-logo {
+  position: relative; flex-shrink: 0;
+  width: 50px; height: 50px; border-radius: var(--r-md);
+  background: var(--fc-soft);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+/* Drop a transparent PNG at assets/brands/… and it takes the plate */
+.spot-logo img { position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); object-fit: contain; }
+.spot-logo img.is-missing { display: none; }
+.spot-mono { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: var(--fc); line-height: 1; }
+
+.spot-id { display: block; min-width: 0; flex: 1; }
+.spot-name {
+  display: block;
+  font-size: 21px; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--ink); line-height: 1.15;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.spot-cat {
+  display: block; margin-top: 3px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.spot-note {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 12.5px; font-weight: 500; line-height: 1.45; color: var(--ink-2);
+}
+
+/* ── Empty state ────────────────────────────── */
+.spot-empty {
+  padding: 22px 16px; text-align: center;
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+}
+
+/* ── Search mode: the section gets out of the way ── */
+body.is-searching .spotlight {
+  max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot-slide { opacity: 1; }
+}

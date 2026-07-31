@@ -1,0 +1,81 @@
+/* ============================================================
+   HEADER
+   Search is the fastest route to "where is X", so it lives in
+   the open rather than behind a toggle. On scroll the brand row
+   folds away and the search bar alone stays pinned.
+   ============================================================ */
+
+.header {
+  position: sticky; top: 0; z-index: 60;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-soft);
+}
+.header-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── Brand row ──────────────────────────────── */
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0 9px;
+  max-height: 74px; opacity: 1; overflow: hidden;
+  transition: max-height 0.26s cubic-bezier(.4,0,.2,1),
+              opacity 0.18s ease,
+              padding 0.26s cubic-bezier(.4,0,.2,1);
+}
+.header.is-scrolled .brand {
+  max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+}
+
+/* The logo is a two-line wordmark, so it carries the brand on its
+   own — no plate around it, and no "Felix Plaza" set in type next
+   to it. Just the mark, a rule, and what this page is. */
+.brand-logo {
+  flex-shrink: 0; height: 44px; width: auto;
+  object-fit: contain; display: block;
+}
+.brand-logo.is-missing { display: none; }
+
+.brand-rule {
+  flex-shrink: 0; width: 1px; height: 26px;
+  background: var(--line);
+}
+.brand-label {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── Search ─────────────────────────────────── */
+.search { padding-bottom: 11px; }
+.header.is-scrolled .search { padding-top: 9px; }
+
+.search-field {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 0 12px; height: 42px;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+.search-field:focus-within {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.search-icon { width: 16px; height: 16px; color: var(--muted); flex-shrink: 0; }
+.search-input {
+  flex: 1; min-width: 0; height: 100%;
+  border: none; outline: none; background: none;
+  font-family: inherit; font-size: 14px; font-weight: 600; color: var(--ink);
+}
+.search-input::placeholder { color: var(--muted-2); font-weight: 500; }
+.search-input::-webkit-search-cancel-button { display: none; }
+
+.search-clear {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(26, 16, 53, 0.10); color: var(--ink-2);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0.6); pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.search-clear svg { width: 10px; height: 10px; }
+.search-clear.is-on { opacity: 1; transform: scale(1); pointer-events: auto; }
+.search-clear:active { background: rgba(26, 16, 53, 0.18); }

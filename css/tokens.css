@@ -1,0 +1,71 @@
+/* ============================================================
+   DESIGN TOKENS
+   Every value here already existed somewhere in the Felix Plaza
+   directory — this file just names them so components stop
+   hard-coding hex values.
+   ============================================================ */
+
+:root {
+  /* ── Surfaces ─────────────────────────────── */
+  --bg:            #f2f0ec;
+  --surface:       #ffffff;
+  --surface-sunk:  #f7f5f2;
+
+  /* ── Ink ──────────────────────────────────── */
+  --ink:           #1a1035;
+  --ink-2:         #4a3d70;
+  --muted:         #8b80a8;
+  --muted-2:       #b0a8c8;
+
+  /* ── Hairlines ────────────────────────────── */
+  --line:          rgba(26, 16, 53, 0.10);
+  --line-soft:     rgba(26, 16, 53, 0.06);
+
+  /* ── Brand accent (the site purple) ───────── */
+  --accent:        #752de9;
+  --accent-deep:   #4f12ad;
+  --accent-soft:   rgba(117, 45, 233, 0.08);
+
+  /* ── Floor identity ───────────────────────────
+     Unchanged from the original directory:
+     `-on` is the deeper tone used for solid active
+     states, `-ink` is the text colour that sits on it. */
+  --f-con: #254cfc;  --f-con-on: #002be2;  --f-con-ink: #ffffff;
+  --f-gf:  #59a800;  --f-gf-on:  #86d021;  --f-gf-ink:  #132600;
+  --f-1f:  #752de9;  --f-1f-on:  #4f12ad;  --f-1f-ink:  #ffffff;
+  --f-2f:  #f46000;  --f-2f-on:  #e05600;  --f-2f-ink:  #ffffff;
+  --f-3f:  #d800d0;  --f-3f-on:  #b200ae;  --f-3f-ink:  #ffffff;
+
+  /* ── Radii ────────────────────────────────── */
+  --r-xs: 6px;
+  --r-sm: 9px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  /* ── Elevation — one shadow, used sparingly ─ */
+  --shadow:     0 1px 2px rgba(26, 16, 53, 0.04), 0 6px 18px rgba(26, 16, 53, 0.05);
+  --shadow-up:  0 -6px 28px rgba(26, 16, 53, 0.14);
+
+  /* ── Layout ───────────────────────────────── */
+  --gutter: 16px;
+  --page-max: 560px;
+
+  /* Sticky offsets — app.js keeps these in sync with reality */
+  --header-h: 112px;
+  --browse-h: 86px;
+}
+
+/* ── Floor scope ────────────────────────────────
+   Put .fl-<floor> on any element and everything
+   inside can use --fc / --fc-soft / --fc-on.      */
+.fl-con { --fc: var(--f-con); --fc-on: var(--f-con-on); --fc-ink: var(--f-con-ink);
+          --fc-soft: rgba(37, 76, 252, 0.09);  --fc-line: rgba(37, 76, 252, 0.32); }
+.fl-gf  { --fc: var(--f-gf);  --fc-on: var(--f-gf-on);  --fc-ink: var(--f-gf-ink);
+          --fc-soft: rgba(89, 168, 0, 0.12);   --fc-line: rgba(89, 168, 0, 0.34); }
+.fl-1f  { --fc: var(--f-1f);  --fc-on: var(--f-1f-on);  --fc-ink: var(--f-1f-ink);
+          --fc-soft: rgba(117, 45, 233, 0.09); --fc-line: rgba(117, 45, 233, 0.30); }
+.fl-2f  { --fc: var(--f-2f);  --fc-on: var(--f-2f-on);  --fc-ink: var(--f-2f-ink);
+          --fc-soft: rgba(244, 96, 0, 0.10);   --fc-line: rgba(244, 96, 0, 0.32); }
+.fl-3f  { --fc: var(--f-3f);  --fc-on: var(--f-3f-on);  --fc-ink: var(--f-3f-ink);
+          --fc-soft: rgba(216, 0, 208, 0.09);  --fc-line: rgba(216, 0, 208, 0.30); }

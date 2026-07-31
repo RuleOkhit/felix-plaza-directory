@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f2f0ec">
+<title>Felix Plaza — Store Directory</title>
+
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css?v=10">
+<link rel="stylesheet" href="css/base.css?v=10">
+<link rel="stylesheet" href="css/ticker.css?v=10">
+<link rel="stylesheet" href="css/header.css?v=10">
+<link rel="stylesheet" href="css/spotlight.css?v=10">
+<link rel="stylesheet" href="css/browse.css?v=10">
+<link rel="stylesheet" href="css/sheet.css?v=10">
+<link rel="stylesheet" href="css/store-list.css?v=10">
+<link rel="stylesheet" href="css/footer.css?v=10">
+</head>
+<body>
+
+<!-- ── OPENING SOON ─────────────────────────────────────── -->
+<div class="ticker">
+  <div class="ticker-inner page">
+    <span class="ticker-label">Opening Soon</span>
+    <span class="ticker-rule"></span>
+    <div class="ticker-mask">
+      <div class="ticker-track">
+        <span class="ticker-item">W FOR WOMEN</span><span class="ticker-sep"></span>
+        <span class="ticker-item">AURELIA</span><span class="ticker-sep"></span>
+        <span class="ticker-item">CINÉPOLIS</span><span class="ticker-sep"></span>
+        <span class="ticker-item">SWEET DREAMS</span><span class="ticker-sep"></span>
+        <span class="ticker-item">SUBWAY</span><span class="ticker-sep"></span>
+        <!-- duplicate set keeps the loop seamless -->
+        <span class="ticker-item">W FOR WOMEN</span><span class="ticker-sep"></span>
+        <span class="ticker-item">AURELIA</span><span class="ticker-sep"></span>
+        <span class="ticker-item">CINÉPOLIS</span><span class="ticker-sep"></span>
+        <span class="ticker-item">SWEET DREAMS</span><span class="ticker-sep"></span>
+        <span class="ticker-item">SUBWAY</span><span class="ticker-sep"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HEADER ───────────────────────────────────────────── -->
+<header class="header" id="header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <img class="brand-logo" src="assets/logo.png" alt="Felix Plaza">
+      <span class="brand-rule"></span>
+      <span class="brand-label">Store Directory</span>
+    </div>
+
+    <div class="search">
+      <div class="search-field">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search all stores"
+               autocomplete="off" enterkeyhint="search" aria-label="Search all stores">
+        <button class="search-clear" id="search-clear" type="button" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- ── STORE SPOTLIGHT ────────────────────────────────── -->
+  <section class="spotlight page" id="spotlight" aria-label="Store Spotlight">
+    <div class="section-head">
+      <h2 class="section-title">Store Spotlight</h2>
+      <div class="spot-bars" id="spot-bars"></div>
+    </div>
+    <div class="spot-stage" id="spot-stage" role="group" tabindex="0"
+         aria-roledescription="carousel" aria-label="Featured stores">
+      <div class="spot-track" id="spot-track"></div>
+    </div>
+  </section>
+
+  <!-- ── BROWSE ─────────────────────────────────────────── -->
+  <div class="browse" id="browse">
+    <div class="browse-inner">
+      <div class="seg" id="seg" role="group" aria-label="Filter by floor">
+        <span class="seg-ind" id="seg-ind"></span>
+        <button class="seg-btn is-on" data-floor="all" aria-pressed="true">All</button>
+        <button class="seg-btn" data-floor="con" aria-pressed="false">CC</button>
+        <button class="seg-btn" data-floor="gf"  aria-pressed="false">GF</button>
+        <button class="seg-btn" data-floor="1f"  aria-pressed="false">1F</button>
+        <button class="seg-btn" data-floor="2f"  aria-pressed="false">2F</button>
+        <button class="seg-btn" data-floor="3f"  aria-pressed="false">3F</button>
+      </div>
+
+      <div class="browse-row">
+        <button class="cat-trigger" id="cat-trigger" type="button" aria-expanded="false">
+          <svg class="cat-trigger-icon" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+          <span class="cat-trigger-label" id="cat-trigger-label">All categories</span>
+          <svg class="cat-trigger-chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STORE LIST ─────────────────────────────────────── -->
+  <div class="directory page" id="directory"></div>
+
+</main>
+
+<!-- ── FOOTER ───────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+
+    <img class="footer-logo" src="assets/logo.png" alt="Felix Plaza">
+    <div class="footer-address">Sector 82A, Gurugram</div>
+
+    <div class="footer-actions">
+      <a class="footer-action" href="https://www.instagram.com/felixplazaggm" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+        </svg>
+        Instagram
+      </a>
+      <a class="footer-action" href="tel:09355778800">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Call Us
+      </a>
+    </div>
+
+    <div class="footer-contact">
+      <a href="tel:09355778800">093557 78800</a>
+      <span class="footer-dot"></span>
+      <a href="https://www.instagram.com/felixplazaggm" target="_blank" rel="noopener">@felixplazaggm</a>
+    </div>
+
+    <div class="footer-rule"></div>
+    <div class="footer-copy">Felix Plaza</div>
+    <div class="footer-copy-sub">© 2026 · All rights reserved</div>
+
+  </div>
+</footer>
+
+<!-- ── SCROLL TO TOP ────────────────────────────────────── -->
+<button class="to-top" id="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<!-- ── CATEGORY SHEET ───────────────────────────────────── -->
+<div class="sheet-root" id="sheet" role="dialog" aria-modal="true" aria-label="Browse by category">
+  <div class="sheet-scrim"></div>
+  <div class="sheet">
+    <div class="sheet-grip"></div>
+    <div class="sheet-head">
+      <h2 class="sheet-title">Browse by category</h2>
+      <button class="sheet-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-grid" id="sheet-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js?v=10"></script>
+<script src="js/featured.js?v=10"></script>
+<script src="js/spotlight.js?v=10"></script>
+<script src="js/directory.js?v=10"></script>
+<script src="js/app.js?v=10"></script>
+</body>
+</html>
