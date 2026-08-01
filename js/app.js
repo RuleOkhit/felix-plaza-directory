@@ -1,39 +1,32 @@
 /* ============================================================
-   APP — boot, sticky offsets, header behaviour, scroll-to-top
+   APP — boot, sticky offset, scroll-to-top
    ============================================================ */
 
 (function () {
   'use strict';
 
-  var header = document.getElementById('header');
-  var toTop  = document.getElementById('to-top');
+  var searchbar = document.getElementById('searchbar');
+  var brandbar  = document.querySelector('.brandbar');
+  var toTop     = document.getElementById('to-top');
 
-  /* The browse bar sticks under the header, and the header changes
-     height when the brand row folds — so the offset can't be a
-     constant. Measured on a rAF loop across the fold transition. */
-  var syncing = 0;
-  function syncOffsets() {
+  /* The browse bar sticks directly under the search bar. Because the
+     search bar's height is now constant, this is a fixed number that
+     only changes on resize — no per-frame chasing, and nothing below
+     it can shift while you scroll. */
+  function syncOffset() {
     document.documentElement.style.setProperty(
-      '--header-h', header.getBoundingClientRect().height + 'px');
-  }
-  function syncWhileAnimating(ms) {
-    var until = performance.now() + ms;
-    if (syncing) cancelAnimationFrame(syncing);
-    (function step() {
-      syncOffsets();
-      syncing = performance.now() < until ? requestAnimationFrame(step) : 0;
-    })();
+      '--header-h', searchbar.getBoundingClientRect().height + 'px');
   }
 
-  var folded = null;
+  var stuck = null;
   function onScroll() {
     var y = window.scrollY || document.documentElement.scrollTop;
 
-    var next = y > 24;
-    if (next !== folded) {
-      header.classList.toggle('is-scrolled', next);
-      folded = next;
-      syncWhileAnimating(340);
+    /* Shadow only — no layout involved, so this can't cause a jump */
+    var next = y > (brandbar ? brandbar.offsetHeight - 8 : 24);
+    if (next !== stuck) {
+      searchbar.classList.toggle('is-stuck', next);
+      stuck = next;
     }
     toTop.classList.toggle('is-on', y > 420);
   }
@@ -46,15 +39,16 @@
      image glyph. Drop assets/logo.png in and it appears. */
   document.querySelectorAll('.brand-logo, .footer-logo').forEach(function (img) {
     if (img.complete && img.naturalWidth === 0) img.classList.add('is-missing');
-    img.addEventListener('error', function () { img.classList.add('is-missing'); });
-    img.addEventListener('load', syncOffsets);
+    img.addEventListener('error', function () { img.classList.add('is-missing'); syncOffset(); });
+    img.addEventListener('load', syncOffset);
   });
 
   Spotlight.init();
   Directory.init();
 
-  syncOffsets();
-  window.addEventListener('resize', function () { syncOffsets(); Spotlight.resize(); });
+  syncOffset();
+  window.addEventListener('resize', function () { syncOffset(); Spotlight.resize(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncOffset);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 })();

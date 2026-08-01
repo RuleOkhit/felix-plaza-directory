@@ -1,52 +1,54 @@
 /* ============================================================
-   HEADER
-   Search is the fastest route to "where is X", so it lives in
-   the open rather than behind a toggle. On scroll the brand row
-   folds away and the search bar alone stays pinned.
+   BRAND BAR + SEARCH BAR
+   ------------------------------------------------------------
+   These used to be one sticky header that folded its brand row
+   away on scroll. Animating the height of a sticky element is
+   what made the whole area feel jumpy: the browse bar sticks
+   directly beneath it, so its offset had to chase a moving
+   number every frame, and anything mid-transition got clipped.
+
+   Now they're two separate things:
+     .brandbar   scrolls away like normal content
+     .searchbar  sticks at the top and NEVER changes height
+
+   With a constant sticky height the browse bar's offset is a
+   fixed number, and nothing below it can shift. The only thing
+   that changes on scroll is a shadow, which costs no layout.
    ============================================================ */
 
-.header {
-  position: sticky; top: 0; z-index: 60;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line-soft);
-}
-.header-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
-
-/* ── Brand row ──────────────────────────────── */
-.brand {
+/* ── Brand bar — scrolls away ───────────────── */
+.brandbar { background: var(--surface); }
+.brandbar-inner {
   display: flex; align-items: center; gap: 12px;
-  padding: 11px 0 9px;
-  max-height: 74px; opacity: 1; overflow: hidden;
-  transition: max-height 0.26s cubic-bezier(.4,0,.2,1),
-              opacity 0.18s ease,
-              padding 0.26s cubic-bezier(.4,0,.2,1);
-}
-.header.is-scrolled .brand {
-  max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+  padding: 11px var(--gutter) 10px;
 }
 
-/* The logo is a two-line wordmark, so it carries the brand on its
-   own — no plate around it, and no "Felix Plaza" set in type next
-   to it. Just the mark, a rule, and what this page is. */
+/* A two-line wordmark carries the brand on its own — no plate
+   around it, and no "Felix Plaza" set in type beside it. */
 .brand-logo {
   flex-shrink: 0; height: 44px; width: auto;
   object-fit: contain; display: block;
 }
 .brand-logo.is-missing { display: none; }
 
-.brand-rule {
-  flex-shrink: 0; width: 1px; height: 26px;
-  background: var(--line);
-}
+.brand-rule { flex-shrink: 0; width: 1px; height: 26px; background: var(--line); }
 .brand-label {
   font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--ink);
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
-/* ── Search ─────────────────────────────────── */
-.search { padding-bottom: 11px; }
-.header.is-scrolled .search { padding-top: 9px; }
+/* ── Search bar — sticky, fixed height ──────── */
+.searchbar {
+  position: sticky; top: 0; z-index: 60;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-soft);
+  transition: box-shadow 0.24s ease;
+}
+/* Purely visual — a shadow can't shift anything below it */
+.searchbar.is-stuck { box-shadow: 0 2px 12px rgba(26, 16, 53, 0.08); }
+
+.searchbar-inner { padding: 9px var(--gutter) 10px; }
 
 .search-field {
   display: flex; align-items: center; gap: 9px;
