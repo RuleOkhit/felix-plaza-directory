@@ -17,7 +17,7 @@ felix-directory/
 │   ├── store-list.css    grouped store cards
 │   └── footer.css        footer + scroll-to-top
 ├── js/
-│   ├── data.js           ← the directory. 83 stores, 19 sections
+│   ├── data.js           ← the directory. 85 stores, 19 sections
 │   ├── featured.js       ← which stores are in the Spotlight
 │   ├── spotlight.js      Spotlight rendering + rotation
 │   ├── directory.js      list, filters, search, category sheet
@@ -60,17 +60,26 @@ into looking like a banner.
 
 ### Logos
 
-Aspect ratios run from 1:1 (Frido) to 3:1 (ASICS), so the panel sizes every logo
-by **height** and lets the width fall where it may. Don't force them into a
+Aspect ratios run from 1.2:1 (KFC) to 4.5:1 (Babyshop), so the panel sizes every
+logo by **height** and lets the width fall where it may. Don't force them into a
 square — that's what made the old plate fail.
 
 Two kinds of source file:
 
-- **Transparent** (H&M, ASICS, Lifestyle) — float on the wash, capped at 42px tall.
-- **Boxed** (Frido, KFC ship with their own background baked in) — set
-  `logoBox: true` and they render as a rounded brand tile instead, so a
-  hard-edged rectangle never sits on the wash. `logoZoom: 1.95` crops the wide
-  margin out of the Frido file.
+- **Transparent** (Babyshop, Geetanjali, Tissot, H&M) — float on the wash,
+  capped at 42px tall.
+- **Boxed** (KFC ships with its own red background baked in) — set
+  `logoBox: true` and it renders as a rounded brand tile instead, so a
+  hard-edged rectangle never sits on the wash. `logoZoom` crops a wide margin
+  out of such a file if it has one.
+
+Check a new logo actually has a transparent background before trusting it — an
+opaque white one will show as a white block on the wash. Drawing it to a canvas
+and reading a corner pixel's alpha is enough.
+
+`assets/brands/` also still holds `frido.jpg`, `asics.png` and `lifestyle.png`
+from an earlier Spotlight line-up. Nothing references them; delete them if you
+don't plan to rotate those brands back in.
 
 Logos appear on Spotlight cards only. The directory list stays text-and-tag.
 

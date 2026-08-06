@@ -5,7 +5,7 @@
    name, floor tag and category title is byte-identical to the
    source — this file is the single place directory data lives.
 
-   Stores: 83   Sections: 19
+   Stores: 85   Sections: 19
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -53,6 +53,7 @@ const SECTIONS = [
       { name: 'H&M', floors: ['gf', '1f'] },
       { name: 'LEVI\'S', floors: ['gf'] },
       { name: 'LIFESTYLE', floors: ['gf', '1f', '2f'] },
+      { name: 'LOUIS PHILIPPE', floors: ['1f'] },
       { name: 'MADAME', floors: ['1f'] },
       { name: 'MARKS & SPENCER', floors: ['gf'] },
       { name: 'MAX', floors: ['1f'] },
@@ -193,6 +194,7 @@ const SECTIONS = [
     stores: [
       { name: 'AMERICAN TOURISTER', floors: ['con'] },
       { name: 'HIDESIGN', floors: ['gf'] },
+      { name: 'SAFARI', floors: ['con'] },
       { name: 'SAMSONITE', floors: ['1f'] }
     ]
   },
