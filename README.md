@@ -60,26 +60,26 @@ into looking like a banner.
 
 ### Logos
 
-Aspect ratios run from 1.2:1 (KFC) to 4.5:1 (Babyshop), so the panel sizes every
+Aspect ratios run from 1:1 (Frido) to 4.5:1 (Babyshop), so the panel sizes every
 logo by **height** and lets the width fall where it may. Don't force them into a
 square — that's what made the old plate fail.
 
 Two kinds of source file:
 
-- **Transparent** (Babyshop, Geetanjali, Tissot, H&M) — float on the wash,
-  capped at 42px tall.
-- **Boxed** (KFC ships with its own red background baked in) — set
+- **Transparent** (Tissot, Babyshop, H&M, Adidas) — float on the wash, capped at
+  42px tall.
+- **Boxed** (Frido ships as a yellow square with its background baked in) — set
   `logoBox: true` and it renders as a rounded brand tile instead, so a
-  hard-edged rectangle never sits on the wash. `logoZoom` crops a wide margin
-  out of such a file if it has one.
+  hard-edged rectangle never sits on the wash. `logoZoom: 1.95` crops the wide
+  margin off the Frido wordmark.
 
 Check a new logo actually has a transparent background before trusting it — an
 opaque white one will show as a white block on the wash. Drawing it to a canvas
 and reading a corner pixel's alpha is enough.
 
-`assets/brands/` also still holds `frido.jpg`, `asics.png` and `lifestyle.png`
-from an earlier Spotlight line-up. Nothing references them; delete them if you
-don't plan to rotate those brands back in.
+`assets/brands/` also holds logos from earlier Spotlight line-ups that nothing
+currently references: `asics.png`, `geetanjali.png`, `kfc.png`, `lifestyle.png`.
+They're kept so brands can be rotated back in without re-sourcing the artwork.
 
 Logos appear on Spotlight cards only. The directory list stays text-and-tag.
 

@@ -12,7 +12,7 @@
      floors    required — array of: con | gf | 1f | 2f | 3f
      logo      required — path under assets/brands/
      logoBox   optional — true when the logo file ships with its
-                          own background baked in (e.g. KFC).
+                          own background baked in (e.g. Frido).
                           Renders it as a rounded brand tile
                           instead of floating it on the panel.
      logoZoom  optional — crops padding out of a boxed logo
@@ -24,41 +24,27 @@
      offer     optional — { tag, text }. Omit it and the card
                           simply ends after the store name.
 
-   Logo aspect ratios vary a lot (Babyshop is 4.5:1, KFC is 1.2:1),
+   Logo aspect ratios vary a lot (Babyshop is 4.5:1, Frido is 1:1),
    so the panel sizes every logo by height and lets the width fall
    where it may. Don't force them into a square.
 
    Colour ordering: consecutive cards shouldn't share a hue, or
    the rotation stops feeling like it's moving. Current run is
-   red → green → purple → charcoal → red.
+   gold → charcoal → green → red → black, and black wraps back
+   round to gold cleanly.
    ============================================================ */
 
 const FEATURED = [
   {
-    store: 'KFC',
-    category: 'Food Court',
-    floors: ['3f'],
-    logo: 'assets/brands/kfc.png',
+    store: 'FRIDO',
+    category: 'Home & Lifestyle',
+    floors: ['con'],
+    logo: 'assets/brands/frido.jpg',
+    /* Ships as a yellow square with a wide margin, so it becomes a
+       brand tile and the zoom crops the padding off the wordmark. */
     logoBox: true,
-    brand: { ink: '#C8102E', wash: 'rgba(200, 16, 46, 0.07)' }
-  },
-  {
-    store: 'BABYSHOP',
-    category: "Kid's Fashion",
-    floors: ['2f'],
-    logo: 'assets/brands/babyshop.png',
-    /* Wordmark is black with green/blue/pink/yellow/orange dots.
-       Green is the first of them and the least used elsewhere. */
-    brand: { ink: '#6CB33F', wash: 'rgba(108, 179, 63, 0.11)' }
-  },
-  {
-    store: 'GEETANJALI SALON',
-    category: 'Salon',
-    floors: ['1f'],
-    logo: 'assets/brands/geetanjali.png',
-    /* Monochrome mark — no brand colour to borrow, so the card
-       uses the directory's own accent rather than inventing one. */
-    brand: { ink: '#752de9', wash: 'rgba(117, 45, 233, 0.07)' }
+    logoZoom: 1.95,
+    brand: { ink: '#C99700', wash: 'rgba(255, 205, 0, 0.17)' }
   },
   {
     store: 'TISSOT',
@@ -70,11 +56,28 @@ const FEATURED = [
     brand: { ink: '#14141A', wash: 'rgba(20, 20, 26, 0.055)' }
   },
   {
+    store: 'BABYSHOP',
+    category: "Kid's Fashion",
+    floors: ['2f'],
+    logo: 'assets/brands/babyshop.png',
+    /* Wordmark is black with green/blue/pink/yellow/orange dots.
+       Green is the first of them and the least used elsewhere. */
+    brand: { ink: '#6CB33F', wash: 'rgba(108, 179, 63, 0.11)' }
+  },
+  {
     store: 'H&M',
     category: 'Apparel',
     floors: ['gf', '1f'],
     logo: 'assets/brands/hm.png',
     brand: { ink: '#E50A1E', wash: 'rgba(229, 10, 30, 0.07)' }
+  },
+  {
+    store: 'ADIDAS',
+    category: 'Sportswear',
+    floors: ['1f'],
+    logo: 'assets/brands/adidas.png',
+    /* Brand black — the mark is monochrome by design. */
+    brand: { ink: '#000000', wash: 'rgba(0, 0, 0, 0.06)' }
   }
 ];
 
