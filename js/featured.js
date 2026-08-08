@@ -28,10 +28,15 @@
    so the panel sizes every logo by height and lets the width fall
    where it may. Don't force them into a square.
 
-   Colour ordering: consecutive cards shouldn't share a hue, or
-   the rotation stops feeling like it's moving. Current run is
-   gold → charcoal → green → red → black, and black wraps back
-   round to gold cleanly.
+   ── Order matters ───────────────────────────────────────────
+   Consecutive cards shouldn't share a hue, or the rotation stops
+   feeling like it's moving — and that includes the wrap from the
+   last card back to the first.
+
+   Vivo and Samsung are both blue, so they sit apart rather than
+   next to each other. Current run:
+
+     gold → charcoal → blue → green → red → blue → black → (gold)
    ============================================================ */
 
 const FEATURED = [
@@ -56,6 +61,14 @@ const FEATURED = [
     brand: { ink: '#14141A', wash: 'rgba(20, 20, 26, 0.055)' }
   },
   {
+    store: 'VIVO',
+    category: 'Mobile & Electronics',
+    floors: ['con'],
+    logo: 'assets/brands/vivo.png',
+    /* Sampled off the artwork rather than guessed. */
+    brand: { ink: '#0070B8', wash: 'rgba(0, 112, 184, 0.075)' }
+  },
+  {
     store: 'BABYSHOP',
     category: "Kid's Fashion",
     floors: ['2f'],
@@ -70,6 +83,14 @@ const FEATURED = [
     floors: ['gf', '1f'],
     logo: 'assets/brands/hm.png',
     brand: { ink: '#E50A1E', wash: 'rgba(229, 10, 30, 0.07)' }
+  },
+  {
+    store: 'SAMSUNG',
+    category: 'Mobile & Electronics',
+    floors: ['1f'],
+    logo: 'assets/brands/samsung.png',
+    /* Deeper than Vivo's blue, and two cards away from it. */
+    brand: { ink: '#0060A8', wash: 'rgba(0, 96, 168, 0.07)' }
   },
   {
     store: 'ADIDAS',
