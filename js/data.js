@@ -1,11 +1,20 @@
 /* ============================================================
    FELIX PLAZA — DIRECTORY DATA
    ------------------------------------------------------------
-   Generated from the original directory markup. Every store
-   name, floor tag and category title is byte-identical to the
-   source — this file is the single place directory data lives.
+   Originally generated from the directory markup in
+   "index (25).html". Every store name, floor tag and category
+   title is byte-identical to that source — this file is the
+   single place directory data lives.
 
-   Stores: 85   Sections: 19
+   ⚠ HAND-EDITED SINCE THAT GENERATION. Added directly here,
+     because they were never in "index (25).html":
+        GIANI ICE CREAM  3F  Food Court
+        VIVO             CC  Mobile & Electronics
+     Regenerating from "index (25).html" would silently drop
+     them. Add them to the source markup first, or keep editing
+     this file by hand from here on.
+
+   Stores: 87   Sections: 19
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -106,6 +115,7 @@ const SECTIONS = [
       { name: 'AMRITSARI EXPRESS', floors: ['3f'] },
       { name: 'BURGER KING', floors: ['3f'] },
       { name: 'CAFÉ CHENNAI', floors: ['3f'] },
+      { name: 'GIANI ICE CREAM', floors: ['3f'] },
       { name: 'HALDIRAM\'S', floors: ['3f'] },
       { name: 'KEVENTERS', floors: ['3f'] },
       { name: 'KFC', floors: ['3f'] },
@@ -201,7 +211,8 @@ const SECTIONS = [
   {
     cat: 'mobile', title: 'Mobile & Electronics',
     stores: [
-      { name: 'SAMSUNG', floors: ['1f'] }
+      { name: 'SAMSUNG', floors: ['1f'] },
+      { name: 'VIVO', floors: ['con'] }
     ]
   },
   {
