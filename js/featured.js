@@ -16,6 +16,9 @@
                           Renders it as a rounded brand tile
                           instead of floating it on the panel.
      logoZoom  optional — crops padding out of a boxed logo
+     logoHeight optional — px cap for this logo, default 42, max 56.
+                          Raise it for icon-style marks, which read
+                          smaller than wordmarks at the same height.
      brand     optional — { ink, wash }
                           ink  = the 3px rule across the top of
                                  the card and the progress bar
@@ -36,7 +39,7 @@
    Vivo and Samsung are both blue, so they sit apart rather than
    next to each other. Current run:
 
-     gold → charcoal → blue → green → red → blue → black
+     gold → charcoal → blue → green → magenta → blue → black
           → purple → (wraps back to gold)
    ============================================================ */
 
@@ -79,11 +82,21 @@ const FEATURED = [
     brand: { ink: '#6CB33F', wash: 'rgba(108, 179, 63, 0.11)' }
   },
   {
-    store: 'H&M',
-    category: 'Apparel',
-    floors: ['gf', '1f'],
-    logo: 'assets/brands/hm.png',
-    brand: { ink: '#E50A1E', wash: 'rgba(229, 10, 30, 0.07)' }
+    store: 'FUNCITY',
+    category: 'Entertainment',
+    floors: ['3f'],
+    /* The supplied file had the mark on the left and a WHITE
+       "FunCity" wordmark beside it — invisible on a light panel,
+       with a wide empty gap. Cropped to just the mark; the card
+       prints the store name underneath anyway. */
+    logo: 'assets/brands/funcity.png',
+    /* An icon rather than a wordmark, so it needs more height to
+       hold its own beside the others. 56px is the ceiling before
+       the panel outgrows the rest of the deck. */
+    logoHeight: 56,
+    /* Magenta is the most-used of the mark's three colours and
+       the one that separates cleanly from its neighbours here. */
+    brand: { ink: '#BD4699', wash: 'rgba(189, 70, 153, 0.08)' }
   },
   {
     store: 'SAMSUNG',

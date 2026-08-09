@@ -78,16 +78,21 @@
 /* ── Logo panel ─────────────────────────────────
    Logos run from 1:1 to 3:1, so they're sized by
    height and the width falls where it may.        */
+/* 92px = the tallest permitted logo (56) plus its padding, so every
+   card is the same height whatever shape its logo is. */
 .spot-panel {
   background: var(--brand-wash, var(--accent-soft));
   border-bottom: 1px solid var(--line-soft);
-  min-height: 84px;
+  min-height: 92px;
   display: flex; align-items: center; justify-content: center;
   padding: 18px 20px;
 }
 .spot-logo { display: flex; align-items: center; justify-content: center; }
+/* Wordmarks cap at 42px. Icon-style marks carry less visual weight at
+   the same height, so an entry can raise its own cap via `logoHeight`
+   in js/featured.js — up to 56px, above which the card would grow. */
 .spot-logo img {
-  max-height: 42px; max-width: 100%;
+  max-height: var(--logo-h, 42px); max-width: 100%;
   width: auto; object-fit: contain;
 }
 .spot-logo img.is-missing { display: none; }

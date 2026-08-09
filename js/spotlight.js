@@ -53,11 +53,16 @@ window.Spotlight = (function () {
     var zoom = (typeof item.logoZoom === 'number' && item.logoZoom > 0)
       ? Math.min(4, item.logoZoom) : 1;
 
+    /* Capped at 56px: above that the panel would outgrow its
+       min-height and this card would be taller than the rest. */
+    var lh = (typeof item.logoHeight === 'number' && item.logoHeight > 0)
+      ? ' style="--logo-h:' + Math.min(56, item.logoHeight) + 'px"' : '';
+
     var logo = item.logoBox
       ? '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + '">' +
           '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">' +
         '</span>'
-      : '<span class="spot-logo">' +
+      : '<span class="spot-logo"' + lh + '>' +
           '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">' +
         '</span>';
 
