@@ -1,18 +1,21 @@
 /* ============================================================
    FELIX PLAZA — DIRECTORY DATA
    ------------------------------------------------------------
-   Originally generated from the directory markup in
-   "index (25).html". Every store name, floor tag and category
-   title is byte-identical to that source — this file is the
-   single place directory data lives.
+   THIS FILE IS THE SOURCE OF TRUTH for the directory.
+   Edit it directly. There is no generator and no upstream
+   markup to regenerate from — the old static site this was
+   originally scraped out of is retired, and several stores
+   below never existed in it.
 
-   ⚠ HAND-EDITED SINCE THAT GENERATION. Added directly here,
-     because they were never in "index (25).html":
-        GIANI ICE CREAM  3F  Food Court
-        VIVO             CC  Mobile & Electronics
-     Regenerating from "index (25).html" would silently drop
-     them. Add them to the source markup first, or keep editing
-     this file by hand from here on.
+   To add a store, drop it into the right section in
+   alphabetical order:
+
+       { name: 'STORE NAME', floors: ['1f'] },
+
+   `floors` takes one or more of con | gf | 1f | 2f | 3f and
+   must match a key in FLOORS. Section order here is the order
+   they render in. Anything featured in js/featured.js must
+   match a `name` below exactly, or it logs a console warning.
 
    Stores: 87   Sections: 19
    ============================================================ */

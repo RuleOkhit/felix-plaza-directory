@@ -36,7 +36,8 @@
    Vivo and Samsung are both blue, so they sit apart rather than
    next to each other. Current run:
 
-     gold → charcoal → blue → green → red → blue → black → (gold)
+     gold → charcoal → blue → green → red → blue → black
+          → purple → (wraps back to gold)
    ============================================================ */
 
 const FEATURED = [
@@ -99,6 +100,17 @@ const FEATURED = [
     logo: 'assets/brands/adidas.png',
     /* Brand black — the mark is monochrome by design. */
     brand: { ink: '#000000', wash: 'rgba(0, 0, 0, 0.06)' }
+  },
+  {
+    store: 'GEETANJALI SALON',
+    category: 'Salon',
+    floors: ['1f'],
+    logo: 'assets/brands/geetanjali.png',
+    /* Monochrome mark — no brand colour to borrow, so the card
+       uses the directory's own accent rather than inventing one.
+       Sits last, where purple separates Adidas' black from
+       Frido's gold on the wrap. */
+    brand: { ink: '#752de9', wash: 'rgba(117, 45, 233, 0.07)' }
   }
 ];
 
