@@ -17,7 +17,7 @@
    they render in. Anything featured in js/featured.js must
    match a `name` below exactly, or it logs a console warning.
 
-   Stores: 87   Sections: 19
+   Stores: 88   Sections: 19
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -78,6 +78,7 @@ const SECTIONS = [
       { name: 'THE BEAR HOUSE', floors: ['1f'] },
       { name: 'TOMMY HILFIGER', floors: ['gf'] },
       { name: 'U.S. POLO ASSN.', floors: ['1f'] },
+      { name: 'VAN HEUSEN', floors: ['1f'] },
       { name: 'WESTSIDE', floors: ['gf'] },
       { name: 'ZUDIO', floors: ['1f'] }
     ]
