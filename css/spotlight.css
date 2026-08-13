@@ -78,12 +78,12 @@
 /* ── Logo panel ─────────────────────────────────
    Logos run from 1:1 to 3:1, so they're sized by
    height and the width falls where it may.        */
-/* 92px = the tallest permitted logo (56) plus its padding, so every
+/* 100px = the tallest permitted logo (64) plus its padding, so every
    card is the same height whatever shape its logo is. */
 .spot-panel {
   background: var(--brand-wash, var(--accent-soft));
   border-bottom: 1px solid var(--line-soft);
-  min-height: 92px;
+  min-height: 100px;
   display: flex; align-items: center; justify-content: center;
   padding: 18px 20px;
 }
@@ -112,11 +112,14 @@
    pale-gold mark would all but vanish on the light panel. Same
    rounded-tile language as --box; here the tile supplies the
    background instead of the file carrying its own.
-   Keep the logo at 36px so tile + padding lands on the 56px
-   ceiling and this card stays the same height as the rest. */
+
+   Padding is deliberately tight so the mark fills the plate rather
+   than floating in a field of it. Set logoHeight so that height +
+   12px lands on the 64px ceiling, and the card stays the same
+   height as every other. */
 .spot-logo--plate {
   background: var(--plate, var(--ink));
-  border-radius: 10px; padding: 10px 15px;
+  border-radius: 11px; padding: 6px 14px;
   box-shadow: 0 1px 3px rgba(26, 16, 53, 0.18);
 }
 .spot-logo--box img {

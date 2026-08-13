@@ -19,9 +19,9 @@
      logoPlate optional — a colour. Sets the logo on a rounded plate
                           of that colour, for artwork too pale or
                           too dark to read on the panel itself. Pair
-                          it with logoHeight: 36 so plate + padding
-                          lands on the 56px ceiling.
-     logoHeight optional — px cap for this logo, default 42, max 56.
+                          it with logoHeight: 52 so plate + its 6px
+                          padding lands on the 64px ceiling.
+     logoHeight optional — px cap for this logo, default 42, max 64.
                           Raise it for icon-style marks, which read
                           smaller than wordmarks at the same height.
      brand     optional — { ink, wash }
@@ -116,7 +116,7 @@ const FEATURED = [
        rather than altering the artwork. */
     logo: 'assets/brands/punjab-grill.svg',
     logoPlate: '#17120C',
-    logoHeight: 36,
+    logoHeight: 52,
     /* A deeper amber than the artwork's pale gold, which is far too
        light to read as a 3px rule. Kept clear of Frido's gold by
        sitting mid-deck rather than next to it. */

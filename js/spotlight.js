@@ -53,10 +53,10 @@ window.Spotlight = (function () {
     var zoom = (typeof item.logoZoom === 'number' && item.logoZoom > 0)
       ? Math.min(4, item.logoZoom) : 1;
 
-    /* Capped at 56px: above that the panel would outgrow its
+    /* Capped at 64px: above that the panel would outgrow its
        min-height and this card would be taller than the rest. */
     var lh = (typeof item.logoHeight === 'number' && item.logoHeight > 0)
-      ? ' style="--logo-h:' + Math.min(56, item.logoHeight) + 'px"' : '';
+      ? ' style="--logo-h:' + Math.min(64, item.logoHeight) + 'px"' : '';
 
     var img = '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">';
     var logo;
@@ -65,7 +65,7 @@ window.Spotlight = (function () {
     } else if (item.logoPlate) {
       logo = '<span class="spot-logo spot-logo--plate" style="--plate:' +
              safeColor(item.logoPlate, 'var(--ink)') + (lh ? ';--logo-h:' +
-             Math.min(56, item.logoHeight) + 'px' : '') + '">' + img + '</span>';
+             Math.min(64, item.logoHeight) + 'px' : '') + '">' + img + '</span>';
     } else {
       logo = '<span class="spot-logo"' + lh + '>' + img + '</span>';
     }
