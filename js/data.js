@@ -17,7 +17,7 @@
    they render in. Anything featured in js/featured.js must
    match a `name` below exactly, or it logs a console warning.
 
-   Stores: 88   Sections: 19
+   Stores: 91   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -37,6 +37,7 @@ const CATEGORIES = [
   { key: 'footwear', label: 'Footwear', icon: '<path d="M2 15c0-2 1.5-3.5 4-4l3-1.5V6a2 2 0 0 1 4 0v3.5l5 1c2 .5 4 2 4 4v1H2v-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' },
   { key: 'sportswear', label: 'Sportswear', icon: '<circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 14l3-6h6l1 4-4 1v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 22l-2-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
   { key: 'food', label: 'Food Court', icon: '<path d="M3 2v7c0 2.2 1.8 4 4 4v9M14 2v20M20 2c0 3-2 5-2 5v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { key: 'restaurants', label: 'Restaurants', icon: '<circle cx="12" cy="6" r="1" fill="currentColor"/><path d="M4 17a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M2.5 17h19M6 20.5h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
   { key: 'cafe', label: 'Café', icon: '<path d="M5 3h11v9a4 4 0 0 1-8 0V3M2 21h16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 5h2a2 2 0 0 1 0 4h-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
   { key: 'jewellery', label: 'Jewellery', icon: '<path d="M6 3h12l3 6-9 12L3 9l3-6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M3 9h18M8 3l-2 6M16 3l2 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
   { key: 'watches', label: 'Watches', icon: '<circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M12 8.5v4l2.5 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 2h6M9 22h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
@@ -88,6 +89,7 @@ const SECTIONS = [
     stores: [
       { name: 'BARARA ETHNIC', floors: ['2f'] },
       { name: 'BIBA', floors: ['2f'] },
+      { name: 'DEVO', floors: ['2f'] },
       { name: 'LIBAS', floors: ['2f'] },
       { name: 'MEENA BAZAAR', floors: ['2f'] },
       { name: 'SABHYATA', floors: ['2f'] },
@@ -129,6 +131,12 @@ const SECTIONS = [
       { name: 'WOW! CHINA', floors: ['3f'] },
       { name: 'WOW! KULFI', floors: ['3f'] },
       { name: 'WOW! MOMO', floors: ['3f'] }
+    ]
+  },
+  {
+    cat: 'restaurants', title: 'Restaurants',
+    stores: [
+      { name: 'PUNJAB GRILL', floors: ['2f'] }
     ]
   },
   {
@@ -228,6 +236,7 @@ const SECTIONS = [
   {
     cat: 'entertainment', title: 'Entertainment',
     stores: [
+      { name: 'FUN BLOCK', floors: ['2f'] },
       { name: 'FUNCITY', floors: ['3f'] }
     ]
   },

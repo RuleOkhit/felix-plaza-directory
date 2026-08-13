@@ -95,6 +95,10 @@
   max-height: var(--logo-h, 42px); max-width: 100%;
   width: auto; object-fit: contain;
 }
+/* An SVG exported with only a viewBox has no intrinsic size, so
+   max-height never resolves and the image collapses to 0x0. Give
+   it a definite height and let the viewBox supply the ratio. */
+.spot-logo img[src$=".svg"] { height: var(--logo-h, 42px); }
 .spot-logo img.is-missing { display: none; }
 
 /* Logos that ship with their own background become a brand tile
@@ -102,6 +106,18 @@
 .spot-logo--box {
   height: 48px; border-radius: 10px; overflow: hidden;
   box-shadow: 0 1px 3px rgba(26, 16, 53, 0.14);
+}
+
+/* A plate for artwork that needs a dark ground to be legible — a
+   pale-gold mark would all but vanish on the light panel. Same
+   rounded-tile language as --box; here the tile supplies the
+   background instead of the file carrying its own.
+   Keep the logo at 36px so tile + padding lands on the 56px
+   ceiling and this card stays the same height as the rest. */
+.spot-logo--plate {
+  background: var(--plate, var(--ink));
+  border-radius: 10px; padding: 10px 15px;
+  box-shadow: 0 1px 3px rgba(26, 16, 53, 0.18);
 }
 .spot-logo--box img {
   height: 100%; width: auto; max-height: none; max-width: none;

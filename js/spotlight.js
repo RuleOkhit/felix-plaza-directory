@@ -58,13 +58,17 @@ window.Spotlight = (function () {
     var lh = (typeof item.logoHeight === 'number' && item.logoHeight > 0)
       ? ' style="--logo-h:' + Math.min(56, item.logoHeight) + 'px"' : '';
 
-    var logo = item.logoBox
-      ? '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + '">' +
-          '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">' +
-        '</span>'
-      : '<span class="spot-logo"' + lh + '>' +
-          '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">' +
-        '</span>';
+    var img = '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">';
+    var logo;
+    if (item.logoBox) {
+      logo = '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + '">' + img + '</span>';
+    } else if (item.logoPlate) {
+      logo = '<span class="spot-logo spot-logo--plate" style="--plate:' +
+             safeColor(item.logoPlate, 'var(--ink)') + (lh ? ';--logo-h:' +
+             Math.min(56, item.logoHeight) + 'px' : '') + '">' + img + '</span>';
+    } else {
+      logo = '<span class="spot-logo"' + lh + '>' + img + '</span>';
+    }
 
     var offer = item.offer
       ? '<div class="spot-offer">' +

@@ -16,6 +16,11 @@
                           Renders it as a rounded brand tile
                           instead of floating it on the panel.
      logoZoom  optional — crops padding out of a boxed logo
+     logoPlate optional — a colour. Sets the logo on a rounded plate
+                          of that colour, for artwork too pale or
+                          too dark to read on the panel itself. Pair
+                          it with logoHeight: 36 so plate + padding
+                          lands on the 56px ceiling.
      logoHeight optional — px cap for this logo, default 42, max 56.
                           Raise it for icon-style marks, which read
                           smaller than wordmarks at the same height.
@@ -39,8 +44,11 @@
    Vivo and Samsung are both blue, so they sit apart rather than
    next to each other. Current run:
 
-     gold → charcoal → blue → green → magenta → blue → black
-          → purple → (wraps back to gold)
+     gold → charcoal → blue → green → magenta → amber → blue
+          → black → purple → (wraps back to gold)
+
+   Punjab Grill's amber sits mid-deck rather than next to Frido,
+   whose gold it would otherwise echo.
    ============================================================ */
 
 const FEATURED = [
@@ -97,6 +105,22 @@ const FEATURED = [
     /* Magenta is the most-used of the mark's three colours and
        the one that separates cleanly from its neighbours here. */
     brand: { ink: '#BD4699', wash: 'rgba(189, 70, 153, 0.08)' }
+  },
+  {
+    store: 'PUNJAB GRILL',
+    category: 'Restaurants',
+    floors: ['2f'],
+    /* SVG, used uncropped exactly as supplied. Every one of its 35
+       paths is #FAE27F — a pale gold that would all but vanish on
+       the light panel, so the card gives it a dark plate to sit on
+       rather than altering the artwork. */
+    logo: 'assets/brands/punjab-grill.svg',
+    logoPlate: '#17120C',
+    logoHeight: 36,
+    /* A deeper amber than the artwork's pale gold, which is far too
+       light to read as a 3px rule. Kept clear of Frido's gold by
+       sitting mid-deck rather than next to it. */
+    brand: { ink: '#A8792A', wash: 'rgba(168, 121, 42, 0.09)' }
   },
   {
     store: 'SAMSUNG',
