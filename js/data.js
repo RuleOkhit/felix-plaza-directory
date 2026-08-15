@@ -17,7 +17,7 @@
    they render in. Anything featured in js/featured.js must
    match a `name` below exactly, or it logs a console warning.
 
-   Stores: 91   Sections: 20
+   Stores: 94   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -76,6 +76,7 @@ const SECTIONS = [
       { name: 'RAREISM', floors: ['gf'] },
       { name: 'SNITCH', floors: ['1f'] },
       { name: 'STYLE UNION', floors: ['con'] },
+      { name: 'SWEET DREAMS', floors: ['2f'] },
       { name: 'THE BEAR HOUSE', floors: ['1f'] },
       { name: 'TOMMY HILFIGER', floors: ['gf'] },
       { name: 'U.S. POLO ASSN.', floors: ['1f'] },
@@ -123,6 +124,7 @@ const SECTIONS = [
       { name: 'CAFÉ CHENNAI', floors: ['3f'] },
       { name: 'GIANI ICE CREAM', floors: ['3f'] },
       { name: 'HALDIRAM\'S', floors: ['3f'] },
+      { name: 'HOUSE OF CANDY', floors: ['3f'] },
       { name: 'KEVENTERS', floors: ['3f'] },
       { name: 'KFC', floors: ['3f'] },
       { name: 'TACO BELL', floors: ['3f'] },
@@ -177,6 +179,7 @@ const SECTIONS = [
     stores: [
       { name: 'BATH & BODY WORKS', floors: ['gf'] },
       { name: 'FOREST ESSENTIALS', floors: ['gf'] },
+      { name: 'NEW U', floors: ['con'] },
       { name: 'NYKAA LUXE', floors: ['gf'] },
       { name: 'SKINBAE', floors: ['gf'] }
     ]
