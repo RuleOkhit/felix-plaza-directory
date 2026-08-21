@@ -11,13 +11,13 @@ felix-directory/
 │   ├── base.css          reset, page shell, floor tags, buttons
 │   ├── ticker.css        "Opening Soon" strip
 │   ├── header.css        brand bar (scrolls) + search bar (sticky)
-│   ├── spotlight.css     Store Spotlight card, track + progress bars
+│   ├── spotlight.css     Spotlight banners, track + progress bars
 │   ├── browse.css        floor segmented control + category trigger
 │   ├── sheet.css         category bottom sheet
 │   ├── store-list.css    grouped store cards
 │   └── footer.css        footer + scroll-to-top
 ├── js/
-│   ├── data.js           ← the directory. 85 stores, 19 sections
+│   ├── data.js           ← the directory. 94 stores, 20 sections
 │   ├── featured.js       ← which stores are in the Spotlight
 │   ├── spotlight.js      Spotlight rendering + rotation
 │   ├── directory.js      list, filters, search, category sheet
@@ -29,65 +29,59 @@ felix-directory/
 
 ## The two files you'll actually edit
 
-**`js/data.js`** — the directory. It was generated straight from the previous
-build's markup, so every store name, floor tag and category title is
-byte-identical to what was there before. Nothing else in the project hard-codes
-a store name.
+**`js/data.js`** — the directory, and the source of truth for it. Edit it
+directly; there is no generator. Nothing else in the project hard-codes a store
+name.
 
 **`js/featured.js`** — which stores appear in Store Spotlight. Each entry is one
-featured store, one card. They rotate, one on screen at a time.
+banner.
 
 ```js
 {
-  store: 'H&M',              // must match a name in data.js exactly
-  category: 'Apparel',
-  floors: ['gf', '1f'],      // con | gf | 1f | 2f | 3f
-  logo: 'assets/brands/hm.png',
-  brand: { ink: '#E50A1E', wash: 'rgba(229, 10, 30, 0.07)' }
+  store: 'VIVO',                       // must match a name in data.js exactly
+  category: 'Mobile & Electronics',    // small-caps kicker
+  floors: ['con'],                     // first one names the floor pill
+  headline: 'Smartphones & more',      // THE MESSAGE — the line that leads
+  logo: 'assets/brands/vivo.png',
+  brand: { bg: '#D3E6F7', ink: '#0070B8' }
 }
 ```
 
 A typo in `store` logs a console warning rather than failing silently.
 
-### Brand colour, used twice and only twice
+### The banner
 
-`brand.ink` draws the 3px rule across the top of the card and fills the progress
-bar while that card is up. `brand.wash` is the same colour at 6–18% behind the
-logo. That's the whole budget — the floor tag stays in the directory's own floor
-colours, so five cards from five brands still read as one family rather than as
-five adverts. Keep the wash faint; it's the thing that stops a card tipping over
-into looking like a banner.
+Modelled on the app-store style promo banners in `ideas/`: a wide card with a
+kicker, a big two-line message, the brand named underneath, and a pill where
+those banners put their CTA — here it names the floor. The logo sits right,
+where those banners put product photography.
 
-### Logos
+`brand.bg` is the banner background and `dark: true` flips text, pill and badge
+to their light variants in one go (Punjab Grill is the only dark one — its logo
+is a pale gold that needs a dark ground).
 
-Aspect ratios run from 1:1 (Frido) to 4.5:1 (Babyshop), so the panel sizes every
-logo by **height** and lets the width fall where it may. Don't force them into a
-square — that's what made the old plate fail.
+**Keep the backgrounds tinted enough to read against the cream page.** They were
+too pale on the first pass and the peeking neighbours were invisible against
+`--bg`. Neighbouring banners also shouldn't share a hue, wrap included.
 
-Two kinds of source file:
+### Headlines
 
-- **Transparent** (Tissot, Babyshop, H&M, Adidas) — float on the wash, capped at
-  42px tall.
-- **Boxed** (Frido ships as a yellow square with its background baked in) — set
-  `logoBox: true` and it renders as a rounded brand tile instead, so a
-  hard-edged rectangle never sits on the wash. `logoZoom: 1.95` crops the wide
-  margin off the Frido wordmark.
+`headline` is the message slot. What ships is plain factual description of what
+each store sells — safe to publish as-is, but **not campaign copy**. Swap in real
+seasonal messaging when a retailer supplies it; that is what the slot is for.
 
-Check a new logo actually has a transparent background before trusting it — an
-opaque white one will show as a white block on the wash. Drawing it to a canvas
-and reading a corner pixel's alpha is enough.
+Keep them to roughly 22 characters. The headline clamps to two lines and clips
+beyond that — at 17.5px in a 56%-wide column, longer lines get cut.
 
-`assets/brands/` also holds logos from earlier Spotlight line-ups that nothing
-currently references: `asics.png`, `geetanjali.png`, `kfc.png`, `lifestyle.png`.
-They're kept so brands can be rotated back in without re-sourcing the artwork.
+### The carousel
 
-Logos appear on Spotlight cards only. The directory list stays text-and-tag.
+Full-bleed track. Slide width is 74% of the stage and the track is offset so the
+active slide is centred, which leaves both neighbours peeking at the screen
+edges. Geometry lives in `measure()`; `baseX(i)` is the resting position for
+slide *i*, and `step` (slide + gap) is one card's travel.
 
-### Optional offer
-
-An entry can carry `offer: { tag, text }` and the card grows a one-line strip
-beneath the store name. Nothing uses it right now — all five cards are just
-logo, name, category and floor.
+Inactive cards sit at `scale(0.94)` and lift to `scale(1)` as they become active,
+on the same easing as the track so the two read as a single movement.
 
 ## Why the header is two elements
 
@@ -141,9 +135,14 @@ tall, beside a rule and "Store Directory") and centred in the footer at 62px.
 It's a two-line wordmark, so it isn't boxed in a plate and there's no "Felix
 Plaza" set in type next to it — the mark says that already.
 
-Per-store logos go in `assets/brands/*.png` as transparent PNGs and fill the
-Spotlight logo plate; without one the plate falls back to a monogram. A missing
-file leaves clean empty space, never a broken-image glyph.
+Per-store logos go in `assets/brands/` and sit on the right of the banner. PNG or
+SVG; check a new one has a genuinely transparent background before trusting it —
+an opaque white one shows as a block on the banner. Wide wordmarks end up limited
+by the art column's width rather than `logoHeight`, which is expected.
+
+An SVG exported with only a `viewBox` has no intrinsic size, so `max-height`
+never resolves and it renders 0×0 — hence the explicit height rule for
+`img[src$=".svg"]`.
 
 ## Cache busting
 

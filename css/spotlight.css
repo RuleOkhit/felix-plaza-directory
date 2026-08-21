@@ -1,26 +1,26 @@
 /* ============================================================
-   STORE SPOTLIGHT
-   One featured store at a time, on a horizontal track.
+   STORE SPOTLIGHT — banner carousel
+   ------------------------------------------------------------
+   Full-bleed track of wide brand banners. One is centred and at
+   full size; its neighbours peek in from both edges, slightly
+   scaled down. As a card becomes active it lifts to full scale,
+   which is what makes the deck feel like it's presenting rather
+   than just sliding.
 
-   Each card is a brand panel over a directory row. The brand
-   colour appears twice and only twice — a 3px rule across the
-   top and a faint wash behind the logo — so the cards read as
-   one family with the site rather than five separate adverts.
-   The floor tag stays in the directory's own floor colours.
+   Geometry is driven from JS (see measure()): the slide width is
+   a fraction of the stage, and the track is offset so the active
+   slide lands dead centre.
    ============================================================ */
 
 .spotlight {
-  padding: 16px 0 6px;
+  padding: 16px 0 8px;
   max-height: 640px; opacity: 1; overflow: hidden;
   transition: max-height 0.4s cubic-bezier(.4,0,.2,1),
               opacity 0.24s ease,
               padding 0.4s cubic-bezier(.4,0,.2,1);
 }
 
-/* ── Progress bars ──────────────────────────────
-   The active bar fills over the dwell time in the
-   current brand's colour, and the deck advances the
-   instant it's full.                              */
+/* ── Progress bars ──────────────────────────── */
 .spot-bars { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
 
 .spot-bar {
@@ -29,7 +29,6 @@
   background: rgba(26, 16, 53, 0.13);
   transition: width 0.44s cubic-bezier(.22,1,.36,1);
 }
-/* Tap target, without changing the drawn size */
 .spot-bar::after { content: ''; position: absolute; inset: -12px -3px; }
 .spot-bar.is-on { width: 28px; }
 
@@ -40,132 +39,144 @@
 }
 
 /* ── Track ──────────────────────────────────────
-   Stage clips; the 4px side margin plus the slide's
-   own padding gives the card shadow room to sit in.
-   touch-action pan-y keeps vertical scrolling with
-   the browser — see the gesture guard in the JS.   */
+   The stage runs the full width of the page so the
+   peeking neighbours are clipped by the screen edge,
+   not by a gutter.                                 */
 .spot-stage {
-  position: relative; margin: 0 4px; overflow: hidden;
+  position: relative; overflow: hidden;
   touch-action: pan-y; outline: none;
   transition: height 0.44s cubic-bezier(.22,1,.36,1);
 }
 .spot-track {
-  display: flex; align-items: flex-start;
+  display: flex; align-items: stretch;
   will-change: transform;
-  transition: transform 0.52s cubic-bezier(.22,1,.36,1);
+  transition: transform 0.55s cubic-bezier(.22,1,.36,1);
 }
 .spot-slide {
-  flex: 0 0 100%; min-width: 0;
-  padding: 0 12px 10px;
-  opacity: 0.4;
-  transition: opacity 0.42s ease;
+  flex: 0 0 var(--slide-w, 74%);
+  margin-right: var(--gap, 12px);
+  min-width: 0;
+  padding-bottom: 10px;          /* shadow room */
 }
-.spot-slide.is-on { opacity: 1; }
 
-/* ── Card ───────────────────────────────────── */
+/* ── The lift ───────────────────────────────────
+   Inactive cards sit a touch smaller and flatter;
+   the active one rises to full size. Same easing as
+   the track so the two read as one movement.       */
 .spot-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow);
+  position: relative; height: 100%;
+  aspect-ratio: 1.5;
+  background: var(--bg, var(--surface));
+  border-radius: 18px; overflow: hidden;
+  display: flex; align-items: center;
+  padding: 15px 16px;
+  transform: scale(0.94);
+  box-shadow: 0 1px 3px rgba(26, 16, 53, 0.06);
+  transition: transform 0.55s cubic-bezier(.22,1,.36,1),
+              box-shadow 0.55s ease;
+}
+.spot-slide.is-on .spot-card {
+  transform: scale(1);
+  box-shadow: 0 2px 5px rgba(26, 16, 53, 0.07), 0 12px 26px rgba(26, 16, 53, 0.10);
+}
+
+/* ── Copy side ──────────────────────────────── */
+.spot-copy {
+  position: relative; z-index: 2;
+  width: 56%; min-width: 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+  height: 100%;
+}
+
+.spot-kicker {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--fg-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.spot-headline {
+  margin-top: 7px;
+  font-size: 17.5px; font-weight: 800; letter-spacing: -0.022em;
+  line-height: 1.2; color: var(--fg);
+  /* two lines, then clip — banners never reflow the card */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.spot-card::before {
-  content: ''; display: block; height: 3px;
-  background: var(--brand, var(--accent));
+
+/* Names the brand under the message, as the reference banners do */
+.spot-sub {
+  margin-top: 5px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em;
+  color: var(--fg-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-/* ── Logo panel ─────────────────────────────────
-   Logos run from 1:1 to 3:1, so they're sized by
-   height and the width falls where it may.        */
-/* 100px = the tallest permitted logo (64) plus its padding, so every
-   card is the same height whatever shape its logo is. */
-.spot-panel {
-  background: var(--brand-wash, var(--accent-soft));
-  border-bottom: 1px solid var(--line-soft);
-  min-height: 100px;
-  display: flex; align-items: center; justify-content: center;
-  padding: 18px 20px;
+/* Sits where the reference puts its CTA: bottom-left of the copy */
+.spot-pill {
+  margin-top: auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--pill-bg); color: var(--pill-fg);
+  border-radius: 20px; padding: 7px 12px 7px 10px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em;
+  white-space: nowrap;
 }
-.spot-logo { display: flex; align-items: center; justify-content: center; }
-/* Wordmarks cap at 42px. Icon-style marks carry less visual weight at
-   the same height, so an entry can raise its own cap via `logoHeight`
-   in js/featured.js — up to 56px, above which the card would grow. */
+.spot-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+/* ── Art side ───────────────────────────────── */
+.spot-art {
+  position: absolute; top: 0; bottom: 0; right: 0;
+  width: 46%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 14px 12px 14px 2px;
+  z-index: 1;
+}
+.spot-logo { display: flex; align-items: center; justify-content: center; max-width: 100%; }
 .spot-logo img {
-  max-height: var(--logo-h, 42px); max-width: 100%;
+  max-height: var(--logo-h, 58px); max-width: 100%;
   width: auto; object-fit: contain;
 }
 /* An SVG exported with only a viewBox has no intrinsic size, so
    max-height never resolves and the image collapses to 0x0. Give
    it a definite height and let the viewBox supply the ratio. */
-.spot-logo img[src$=".svg"] { height: var(--logo-h, 42px); }
+.spot-logo img[src$=".svg"] { height: var(--logo-h, 58px); }
 .spot-logo img.is-missing { display: none; }
 
 /* Logos that ship with their own background become a brand tile
-   rather than floating a coloured rectangle on the wash. */
+   rather than floating a rectangle on the banner. */
 .spot-logo--box {
-  height: 48px; border-radius: 10px; overflow: hidden;
-  box-shadow: 0 1px 3px rgba(26, 16, 53, 0.14);
-}
-
-/* A plate for artwork that needs a dark ground to be legible — a
-   pale-gold mark would all but vanish on the light panel. Same
-   rounded-tile language as --box; here the tile supplies the
-   background instead of the file carrying its own.
-
-   Padding is deliberately tight so the mark fills the plate rather
-   than floating in a field of it. Set logoHeight so that height +
-   12px lands on the 64px ceiling, and the card stays the same
-   height as every other. */
-.spot-logo--plate {
-  background: var(--plate, var(--ink));
-  border-radius: 11px; padding: 6px 14px;
-  box-shadow: 0 1px 3px rgba(26, 16, 53, 0.18);
+  height: var(--logo-h, 58px); border-radius: 12px; overflow: hidden;
+  box-shadow: 0 2px 6px rgba(26, 16, 53, 0.18);
 }
 .spot-logo--box img {
   height: 100%; width: auto; max-height: none; max-width: none;
-  display: block;
-  transform: scale(var(--zoom, 1));   /* crops baked-in padding */
+  display: block; transform: scale(var(--zoom, 1));
 }
 
-/* ── Foot: the directory row ────────────────── */
-.spot-foot {
-  display: flex; align-items: center; gap: 10px;
-  padding: 13px 15px 14px;
-}
-.spot-id { display: block; min-width: 0; flex: 1; }
-.spot-name {
-  display: block;
-  font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
-  color: var(--ink); line-height: 1.15;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.spot-cat {
-  display: block; margin-top: 3px;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
-  text-transform: uppercase; color: var(--muted);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-/* ── Optional offer strip ───────────────────────
-   Only renders when an entry in featured.js has an
-   `offer`. Nothing uses it right now.             */
-.spot-offer {
-  display: flex; align-items: center; gap: 9px;
-  margin: 0 15px; padding: 11px 0 13px;
-  border-top: 1px solid var(--line-soft);
-}
-.spot-offer-tag {
-  flex-shrink: 0;
-  background: var(--ink); color: #fff;
-  border-radius: var(--r-xs); padding: 3px 8px;
-  font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+/* ── Featured badge — the reference's "Ad" corner ── */
+.spot-badge {
+  position: absolute; right: 10px; bottom: 10px; z-index: 3;
+  background: var(--badge-bg); color: var(--badge-fg);
+  border-radius: 5px; padding: 3px 7px;
+  font-size: 7.5px; font-weight: 800; letter-spacing: 0.12em;
   text-transform: uppercase; line-height: 1.2;
 }
-.spot-offer-text {
-  min-width: 0;
-  font-size: 12px; font-weight: 600; color: var(--ink-2);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+
+/* ── Light / dark banners ───────────────────────
+   Set per entry in js/featured.js. Text, pill and
+   badge all flip together.                        */
+.spot-card {
+  --fg: #1a1035;
+  --fg-dim: rgba(26, 16, 53, 0.55);
+  --pill-bg: #1a1035; --pill-fg: #fff;
+  --badge-bg: rgba(26, 16, 53, 0.10); --badge-fg: rgba(26, 16, 53, 0.55);
+}
+.spot-card.is-dark {
+  --fg: #fff;
+  --fg-dim: rgba(255, 255, 255, 0.60);
+  --pill-bg: #fff; --pill-fg: #1a1035;
+  --badge-bg: rgba(255, 255, 255, 0.16); --badge-fg: rgba(255, 255, 255, 0.72);
 }
 
 /* ── Empty state ────────────────────────────── */
@@ -181,5 +192,5 @@ body.is-searching .spotlight {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spot-slide { opacity: 1; }
+  .spot-card, .spot-slide.is-on .spot-card { transform: none; }
 }

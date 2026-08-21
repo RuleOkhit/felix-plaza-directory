@@ -4,51 +4,42 @@
    THIS IS THE FILE YOU EDIT TO CHANGE WHAT'S FEATURED.
    Nothing else needs touching.
 
-   One entry = one featured store = one card.
+   One entry = one banner.
 
    Fields
      store     required — must match a name in js/data.js exactly
-     category  required — shown under the store name
+     category  required — the small caps kicker above the message
      floors    required — array of: con | gf | 1f | 2f | 3f
+                          the first one names the floor pill
      logo      required — path under assets/brands/
-     logoBox   optional — true when the logo file ships with its
-                          own background baked in (e.g. Frido).
-                          Renders it as a rounded brand tile
-                          instead of floating it on the panel.
-     logoZoom  optional — crops padding out of a boxed logo
-     logoPlate optional — a colour. Sets the logo on a rounded plate
-                          of that colour, for artwork too pale or
-                          too dark to read on the panel itself. Pair
-                          it with logoHeight: 52 so plate + its 6px
-                          padding lands on the 64px ceiling.
-     logoHeight optional — px cap for this logo, default 42, max 64.
-                          Raise it for icon-style marks, which read
-                          smaller than wordmarks at the same height.
-     brand     optional — { ink, wash }
-                          ink  = the 3px rule across the top of
-                                 the card and the progress bar
-                          wash = the same colour at 5–18% behind
-                                 the logo. Keep it faint.
-     offer     optional — { tag, text }. Omit it and the card
-                          simply ends after the store name.
+     headline  optional — THE MESSAGE. This is the line that leads
+                          the banner. Leave it out and the store
+                          name leads instead.
+     brand.bg  the banner background. Keep them soft and muted —
+               the banner should sit inside the directory, not
+               shout over it.
+     brand.ink the progress-bar colour for this card.
+     dark      set true when bg is dark; flips the text, pill and
+               badge to their light variants in one go.
+     logoBox   true when the logo file ships with its own
+               background baked in (Frido). Renders a brand tile.
+     logoZoom  crops padding out of a boxed logo.
+     logoHeight px cap for this logo, default 58, max 72. Wide
+               wordmarks end up limited by the art column's width
+               rather than this, which is expected.
 
-   Logo aspect ratios vary a lot (Babyshop is 4.5:1, Frido is 1:1),
-   so the panel sizes every logo by height and lets the width fall
-   where it may. Don't force them into a square.
+   ── About the headlines ─────────────────────────────────────
+   The lines below are plain descriptions of what each store
+   sells — factual, and safe to publish as-is. They are NOT
+   campaign copy. Swap them for real seasonal messaging
+   ("Anti-frizz care starts here", "Monsoon edit is in") as and
+   when the retailer supplies it; that is what this slot is for.
 
-   ── Order matters ───────────────────────────────────────────
-   Consecutive cards shouldn't share a hue, or the rotation stops
-   feeling like it's moving — and that includes the wrap from the
-   last card back to the first.
-
-   Vivo and Samsung are both blue, so they sit apart rather than
-   next to each other. Current run:
-
-     gold → charcoal → blue → green → magenta → amber → blue
-          → black → purple → (wraps back to gold)
-
-   Punjab Grill's amber sits mid-deck rather than next to Frido,
-   whose gold it would otherwise echo.
+   ── About the order ─────────────────────────────────────────
+   Neighbouring banners shouldn't share a background hue, and
+   that includes the wrap from the last card back to the first.
+   Current run: butter, stone, sky, mint, blush, dark, steel,
+   sand, lilac.
    ============================================================ */
 
 const FEATURED = [
@@ -56,101 +47,89 @@ const FEATURED = [
     store: 'FRIDO',
     category: 'Home & Lifestyle',
     floors: ['con'],
+    headline: 'Everyday home comfort',
     logo: 'assets/brands/frido.jpg',
     /* Ships as a yellow square with a wide margin, so it becomes a
        brand tile and the zoom crops the padding off the wordmark. */
     logoBox: true,
     logoZoom: 1.95,
-    brand: { ink: '#C99700', wash: 'rgba(255, 205, 0, 0.17)' }
+    logoHeight: 62,
+    brand: { bg: '#FBEBC0', ink: '#C99700' }
   },
   {
     store: 'TISSOT',
     category: 'Watches',
     floors: ['gf'],
+    headline: 'Swiss watchmaking',
     logo: 'assets/brands/tissot.png',
-    /* The wordmark is black; the Swiss red lives inside the mark
-       itself, so the card stays charcoal and lets it show. */
-    brand: { ink: '#14141A', wash: 'rgba(20, 20, 26, 0.055)' }
+    brand: { bg: '#E2DED5', ink: '#14141A' }
   },
   {
     store: 'VIVO',
     category: 'Mobile & Electronics',
     floors: ['con'],
+    headline: 'Smartphones & more',
     logo: 'assets/brands/vivo.png',
-    /* Sampled off the artwork rather than guessed. */
-    brand: { ink: '#0070B8', wash: 'rgba(0, 112, 184, 0.075)' }
+    brand: { bg: '#D3E6F7', ink: '#0070B8' }
   },
   {
     store: 'BABYSHOP',
     category: "Kid's Fashion",
     floors: ['2f'],
+    headline: 'Kidswear and baby care',
     logo: 'assets/brands/babyshop.png',
-    /* Wordmark is black with green/blue/pink/yellow/orange dots.
-       Green is the first of them and the least used elsewhere. */
-    brand: { ink: '#6CB33F', wash: 'rgba(108, 179, 63, 0.11)' }
+    brand: { bg: '#DDEFD2', ink: '#6CB33F' }
   },
   {
     store: 'FUNCITY',
     category: 'Entertainment',
     floors: ['3f'],
-    /* The supplied file had the mark on the left and a WHITE
-       "FunCity" wordmark beside it — invisible on a light panel,
-       with a wide empty gap. Cropped to just the mark; the card
-       prints the store name underneath anyway. */
+    headline: 'Games, rides & arcade',
+    /* Cropped to the mark — the supplied file's wordmark was white
+       and would have vanished on a light banner. */
     logo: 'assets/brands/funcity.png',
-    /* An icon rather than a wordmark, so it needs more height to
-       hold its own beside the others. 56px is the ceiling before
-       the panel outgrows the rest of the deck. */
-    logoHeight: 56,
-    /* Magenta is the most-used of the mark's three colours and
-       the one that separates cleanly from its neighbours here. */
-    brand: { ink: '#BD4699', wash: 'rgba(189, 70, 153, 0.08)' }
+    logoHeight: 66,
+    brand: { bg: '#F8DCEE', ink: '#BD4699' }
   },
   {
     store: 'PUNJAB GRILL',
     category: 'Restaurants',
     floors: ['2f'],
-    /* SVG, used uncropped exactly as supplied. Every one of its 35
-       paths is #FAE27F — a pale gold that would all but vanish on
-       the light panel, so the card gives it a dark plate to sit on
-       rather than altering the artwork. */
+    headline: 'North Indian dining',
+    /* SVG, used uncropped exactly as supplied. All 35 of its paths
+       are a pale gold, so this banner runs dark and lets the mark
+       sit straight on the background — no plate needed. */
     logo: 'assets/brands/punjab-grill.svg',
-    logoPlate: '#17120C',
-    logoHeight: 52,
-    /* A deeper amber than the artwork's pale gold, which is far too
-       light to read as a 3px rule. Kept clear of Frido's gold by
-       sitting mid-deck rather than next to it. */
-    brand: { ink: '#A8792A', wash: 'rgba(168, 121, 42, 0.09)' }
+    logoHeight: 46,
+    dark: true,
+    brand: { bg: '#17120C', ink: '#C9A227' }
   },
   {
     store: 'SAMSUNG',
     category: 'Mobile & Electronics',
     floors: ['1f'],
+    headline: 'Phones and wearables',
     logo: 'assets/brands/samsung.png',
-    /* Deeper than Vivo's blue, and two cards away from it. */
-    brand: { ink: '#0060A8', wash: 'rgba(0, 96, 168, 0.07)' }
+    brand: { bg: '#D8E6F3', ink: '#0060A8' }
   },
   {
     store: 'ADIDAS',
     category: 'Sportswear',
     floors: ['1f'],
+    headline: 'Sportswear & footwear',
     logo: 'assets/brands/adidas.png',
-    /* Brand black — the mark is monochrome by design. */
-    brand: { ink: '#000000', wash: 'rgba(0, 0, 0, 0.06)' }
+    brand: { bg: '#E5E1DA', ink: '#000000' }
   },
   {
     store: 'GEETANJALI SALON',
     category: 'Salon',
     floors: ['1f'],
+    headline: 'Hair, skin and beauty',
     logo: 'assets/brands/geetanjali.png',
-    /* Monochrome mark — no brand colour to borrow, so the card
-       uses the directory's own accent rather than inventing one.
-       Sits last, where purple separates Adidas' black from
-       Frido's gold on the wrap. */
-    brand: { ink: '#752de9', wash: 'rgba(117, 45, 233, 0.07)' }
+    brand: { bg: '#E7DCFA', ink: '#752de9' }
   }
 ];
 
-/* How long each card holds before the next one, in ms.
+/* How long each banner holds before the next one, in ms.
    This is also how long the progress bar takes to fill. */
 const FEATURED_DWELL = 4500;

@@ -23,8 +23,15 @@ window.Spotlight = (function () {
   var DECIDE_PX = 10;
   var H_BIAS = 1.4;
 
+  /* Banner geometry. The slide is a fraction of the stage so the
+     neighbours show at both edges; the track is then offset to put
+     the active slide dead centre. */
+  var SLIDE_RATIO = 0.74;
+  var GAP = 12;
+
   var stage, track, barWrap, slides = [], bars = [];
-  var idx = 0, dir = 1, width = 0;
+  var idx = 0, dir = 1;
+  var stageW = 0, slideW = 0, step = 0, originX = 0;
   var timer = null, startedAt = 0, remain = 0, sized = false;
   var held = false, offScreen = false, tabHidden = false, suspended = false;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,56 +49,57 @@ window.Spotlight = (function () {
   /* ── Card ───────────────────────────────────── */
   function cardHTML(item) {
     var brand = item.brand || {};
-    var ink  = safeColor(brand.ink,  'var(--accent)');
-    var wash = safeColor(brand.wash, 'var(--accent-soft)');
+    var bg = safeColor(brand.bg, safeColor(brand.wash, 'var(--surface)'));
 
-    var tags = (item.floors || []).map(function (f) {
-      var meta = FLOORS.filter(function (x) { return x.key === f; })[0];
-      return '<span class="floor-tag fl-' + f + '">' + esc(meta ? meta.short : f) + '</span>';
-    }).join('');
+    var floor = (item.floors || [])[0];
+    var meta = FLOORS.filter(function (x) { return x.key === floor; })[0];
+    var floorName = meta ? meta.name : '';
 
     var zoom = (typeof item.logoZoom === 'number' && item.logoZoom > 0)
       ? Math.min(4, item.logoZoom) : 1;
-
-    /* Capped at 64px: above that the panel would outgrow its
-       min-height and this card would be taller than the rest. */
     var lh = (typeof item.logoHeight === 'number' && item.logoHeight > 0)
-      ? ' style="--logo-h:' + Math.min(64, item.logoHeight) + 'px"' : '';
+      ? ';--logo-h:' + Math.min(72, item.logoHeight) + 'px' : '';
 
     var img = '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">';
-    var logo;
-    if (item.logoBox) {
-      logo = '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + '">' + img + '</span>';
-    } else if (item.logoPlate) {
-      logo = '<span class="spot-logo spot-logo--plate" style="--plate:' +
-             safeColor(item.logoPlate, 'var(--ink)') + (lh ? ';--logo-h:' +
-             Math.min(64, item.logoHeight) + 'px' : '') + '">' + img + '</span>';
-    } else {
-      logo = '<span class="spot-logo"' + lh + '>' + img + '</span>';
-    }
+    var logo = item.logoBox
+      ? '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + lh + '">' + img + '</span>'
+      : '<span class="spot-logo"' + (lh ? ' style="' + lh.slice(1) + '"' : '') + '>' + img + '</span>';
 
-    var offer = item.offer
-      ? '<div class="spot-offer">' +
-          '<span class="spot-offer-tag">' + esc(item.offer.tag || 'Offer') + '</span>' +
-          '<span class="spot-offer-text">' + esc(item.offer.text || '') + '</span>' +
-        '</div>'
-      : '';
+    /* Kicker = category, headline = the message, sub = the store.
+       Same shape as the reference banners, which name the brand in
+       the supporting line and let the message lead. Without a
+       headline the store name leads instead and the sub drops. */
+    var headline = item.headline || item.store;
+    var sub = item.headline ? item.store : '';
 
-    return '<article class="spot-card" style="--brand:' + ink + ';--brand-wash:' + wash + '">' +
-      '<div class="spot-panel">' + logo + '</div>' +
-      '<div class="spot-foot">' +
-        '<span class="spot-id">' +
-          '<span class="spot-name">' + esc(item.store) + '</span>' +
-          '<span class="spot-cat">' + esc(item.category) + '</span>' +
+    return '<article class="spot-card' + (item.dark ? ' is-dark' : '') +
+        '" style="--bg:' + bg + '">' +
+      '<div class="spot-copy">' +
+        '<p class="spot-kicker">' + esc(item.category) + '</p>' +
+        '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
+        (sub ? '<p class="spot-sub">' + esc(sub) + '</p>' : '') +
+        '<span class="spot-pill">' +
+          '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="currentColor"/></svg>' +
+          esc(floorName) +
         '</span>' +
-        '<span class="floor-tags">' + tags + '</span>' +
       '</div>' +
-      offer +
+      '<div class="spot-art">' + logo + '</div>' +
+      '<span class="spot-badge">Featured</span>' +
     '</article>';
   }
 
-  /* ── Geometry ───────────────────────────────── */
-  function measure() { width = stage.clientWidth; }
+  /* ── Geometry ───────────────────────────────────
+     originX centres the active slide; step is how far
+     the track travels per card.                      */
+  function measure() {
+    stageW = stage.clientWidth;
+    slideW = Math.round(stageW * SLIDE_RATIO);
+    step = slideW + GAP;
+    originX = Math.round((stageW - slideW) / 2);
+    track.style.setProperty('--slide-w', slideW + 'px');
+    track.style.setProperty('--gap', GAP + 'px');
+  }
+  function baseX(i) { return originX - i * step; }
 
   function sizeStage() {
     if (!slides.length) return;
@@ -195,7 +203,7 @@ window.Spotlight = (function () {
 
   /* ── Moving between cards ───────────────────── */
   function settle() {
-    place(-idx * width, true);
+    place(baseX(idx), true);
     sizeStage();
     slides.forEach(function (s, n) { s.classList.toggle('is-on', n === idx); });
     var brand = (FEATURED[idx] || {}).brand || {};
@@ -250,7 +258,7 @@ window.Spotlight = (function () {
       lastX = e.clientX; lastT = e.timeStamp;
 
       var over = (idx === 0 && dx > 0) || (idx === FEATURED.length - 1 && dx < 0);
-      place(-idx * width + (over ? dx * 0.32 : dx), false);
+      place(baseX(idx) + (over ? dx * 0.32 : dx), false);
     }, { passive: true });
 
     function finish(cancelled) {
@@ -260,12 +268,12 @@ window.Spotlight = (function () {
 
       held = false;
       if (cancelled) {
-        place(-idx * width, true);                    // browser took the gesture
+        place(baseX(idx), true);                      // browser took the gesture
         play();
       } else {
         /* Flick beats distance — a short fast swipe should still turn */
         var flick = Math.abs(velocity) > 0.45 && Math.abs(dx) > 12;
-        var far   = Math.abs(dx) > width * 0.22;
+        var far   = Math.abs(dx) > step * 0.22;
         var step  = (flick || far) ? (dx < 0 ? 1 : -1) : 0;
         if (step) dir = step;
         goTo(idx + step);
@@ -323,12 +331,12 @@ window.Spotlight = (function () {
     });
 
     measure();
-    place(0, false);
+    place(baseX(0), false);
     remain = FEATURED_DWELL;
     settle();
     bindDrag();
 
-    function refit() { measure(); place(-idx * width, false); sizeStage(); }
+    function refit() { measure(); place(baseX(idx), false); sizeStage(); }
     window.addEventListener('resize', refit);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
     /* Logos decode after first paint and change the card height */
@@ -364,7 +372,7 @@ window.Spotlight = (function () {
     play();
   }
 
-  function resize() { measure(); place(-idx * width, false); sizeStage(); }
+  function resize() { measure(); place(baseX(idx), false); sizeStage(); }
 
   return { init: init, resize: resize, setPaused: setPaused };
 })();
