@@ -82,6 +82,14 @@ window.Spotlight = (function () {
       ? '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + lh + '">' + img + '</span>'
       : '<span class="spot-logo"' + (lh ? ' style="' + lh.slice(1) + '"' : '') + '>' + img + '</span>';
 
+    /* A supplied creative takes over the whole card: the photo is
+       the background, a scrim carries the copy, and the logo drops
+       to a small mark top-right — the same shape the reference
+       banners use when they lead with photography. Anything else
+       would mean squeezing a square image into a 46% column. */
+    var isPhoto = !!item.creative;
+    var focus = /^[\w\s%]+$/.test(item.creativeFocus || '') ? item.creativeFocus : '50% 50%';
+
     /* Kicker = category, headline = the message, sub = the store.
        Same shape as the reference banners, which name the brand in
        the supporting line and let the message lead. Without a
@@ -89,8 +97,14 @@ window.Spotlight = (function () {
     var headline = item.headline || item.store;
     var sub = item.headline ? item.store : '';
 
-    return '<article class="spot-card' + (item.dark ? ' is-dark' : '') +
-        '" style="--bg:' + bg + '">' +
+    return '<article class="spot-card' + (isPhoto ? ' spot-card--photo' : '') +
+        (item.dark ? ' is-dark' : '') + '" style="--bg:' + bg + '">' +
+      (isPhoto
+        ? '<img class="spot-photo" src="' + esc(item.creative) + '" alt="" ' +
+            'style="object-position:' + focus + '">' +
+          '<span class="spot-scrim"></span>' +
+          '<span class="spot-mark">' + img + '</span>'
+        : '') +
       '<div class="spot-copy">' +
         '<p class="spot-kicker">' + esc(item.category) + '</p>' +
         '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
@@ -100,7 +114,7 @@ window.Spotlight = (function () {
           '<span class="spot-pill-text">' + esc(floorName) + '</span>' +
         '</span>' +
       '</div>' +
-      '<div class="spot-art">' + logo + '</div>' +
+      (isPhoto ? '' : '<div class="spot-art">' + logo + '</div>') +
       '<span class="spot-badge">Featured</span>' +
     '</article>';
   }

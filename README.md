@@ -17,7 +17,7 @@ felix-directory/
 │   ├── store-list.css    grouped store cards
 │   └── footer.css        footer + scroll-to-top
 ├── js/
-│   ├── data.js           ← the directory. 94 stores, 20 sections
+│   ├── data.js           ← the directory. 96 stores, 20 sections
 │   ├── featured.js       ← which stores are in the Spotlight
 │   ├── spotlight.js      Spotlight rendering + rotation
 │   ├── directory.js      list, filters, search, category sheet
@@ -63,6 +63,25 @@ is a pale gold that needs a dark ground).
 **Keep the backgrounds tinted enough to read against the cream page.** They were
 too pale on the first pass and the peeking neighbours were invisible against
 `--bg`. Neighbouring banners also shouldn't share a hue, wrap included.
+
+### Supplied creatives
+
+An entry can carry `creative` (a path to artwork) instead of relying on its
+logo. That switches the card to a photo-led layout: the image fills the card,
+the copy sits on a scrim over its quiet side, and the logo drops to a small mark
+top-right — the shape the reference banners use when photography leads.
+
+`creativeFocus` is the image's `object-position`. Use it to keep the subject in
+frame **and to steer the crop away from anything a landscape crop would slice in
+half.** Punjab Grill's artwork is square with a yellow roundel across its lower
+band; measured off the file, the roundel starts at 0.678 of the height while the
+visible band is 0.676 of it, so the window has to start at the very top. Its
+message is set as the headline instead of being shown half-cropped.
+
+The scrim's gradient stops were set by measurement. The first pass bottomed out
+at **4.51:1** for white text against the bright cloth on the right of the copy
+column — passing AA by a hundredth. The current stops measure **8.67:1**. If you
+add another creative, re-check it; a lighter photo will need more scrim.
 
 ### Headlines
 

@@ -173,6 +173,44 @@
   display: block; transform: scale(var(--zoom, 1));
 }
 
+/* ── Photo-led card ─────────────────────────────
+   For banners supplied as artwork rather than built
+   from a logo. The image fills the card and is
+   cropped by object-position, so it is never
+   squeezed out of its own proportions; the copy sits
+   on a scrim over the quiet side of the photograph.
+   The scrim is there for legibility, not decoration —
+   white type on a photo needs a floor to stand on. These stops
+   were set by measurement, not eye: the first pass bottomed out
+   at 4.51:1 against the bright cloth on the right of the copy
+   column, which passes AA by a hundredth. Don't thin them. */
+.spot-card--photo { background: #14100b; }
+
+.spot-photo {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;          /* never distorts; crops instead */
+  display: block;
+}
+.spot-scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(14, 11, 7, 0.95) 0%,
+    rgba(14, 11, 7, 0.92) 38%,
+    rgba(14, 11, 7, 0.62) 68%,
+    rgba(14, 11, 7, 0.12) 100%);
+}
+.spot-card--photo .spot-copy { width: 64%; z-index: 2; }
+
+/* The brand mark shrinks to a corner signature, as the reference
+   banners do when a photograph is carrying the card. */
+.spot-mark {
+  position: absolute; top: 12px; right: 13px; z-index: 2;
+  display: flex; align-items: center;
+}
+.spot-mark img { height: 21px; width: auto; display: block; }
+.spot-mark img[src$=".svg"] { height: 21px; }
+
 /* ── Featured badge — the reference's "Ad" corner ── */
 .spot-badge {
   position: absolute; right: 10px; bottom: 10px; z-index: 3;

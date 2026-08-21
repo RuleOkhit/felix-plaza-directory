@@ -27,6 +27,13 @@
      logoHeight px cap for this logo, default 58, max 72. Wide
                wordmarks end up limited by the art column's width
                rather than this, which is expected.
+     creative  optional — path to supplied banner artwork. Switches
+               the card to a photo-led layout: image fills the card,
+               copy sits on a scrim, logo becomes a corner mark.
+               Pair with `dark: true`.
+     creativeFocus  object-position for that image, e.g. '50% 6%'.
+               Use it to keep the subject in frame and to steer the
+               crop away from anything that would be sliced in half.
 
    ── About the headlines ─────────────────────────────────────
    The lines below are plain descriptions of what each store
@@ -47,12 +54,25 @@ const FEATURED = [
     store: 'PUNJAB GRILL',
     category: 'Restaurants',
     floors: ['2f'],
-    headline: 'North Indian dining',
-    /* SVG, used uncropped exactly as supplied. All 35 of its paths
-       are a pale gold, so this banner runs dark and lets the mark
-       sit straight on the background — no plate needed. */
+    /* The brand's own supplied creative. Being square, it can't go
+       in the 46% art column without being mangled, so `creative`
+       switches the card to a photo-led layout: the image fills the
+       card, the copy sits on a scrim over its quiet left side, and
+       the logo drops to a corner mark.
+
+       creativeFocus crops it. The artwork's lower band carries a
+       yellow "61st outlet" roundel and a dish caption, both of
+       which a landscape crop would slice in half. Measured off the
+       artwork: the roundel starts at y=824 of 1216 (0.678) and the
+       visible band is 0.676 of the height, so the window has to
+       start at the very top to clear it. That keeps the dish and
+       the dark space the copy sits on, and drops the roundel --
+       whose message is set as the headline instead. Nothing is
+       squeezed and nothing is left half-showing. */
+    creative: 'assets/creatives/punjab-grill.jpg',
+    creativeFocus: '50% 0%',
+    headline: 'Our 61st outlet in India',
     logo: 'assets/brands/punjab-grill.svg',
-    logoHeight: 46,
     dark: true,
     brand: { bg: '#17120C', ink: '#C9A227' }
   },
