@@ -83,6 +83,40 @@ slide *i*, and `step` (slide + gap) is one card's travel.
 Inactive cards sit at `scale(0.94)` and lift to `scale(1)` as they become active,
 on the same easing as the track so the two read as a single movement.
 
+### The loop
+
+Endless, and always forwards — it never reverses at the ends. Two clones of each
+end are rendered either side of the real run (`CLONES = 2`), so the track is
+`[8][9] [1..9] [1][2]` and the last card already sits to the left of the first
+before anything has moved.
+
+`idx` is a position in the **rendered** track; `realOf(idx)` maps it back to a
+real card, which is what the progress bars key off. Stepping past the end lands
+on a clone, which looks identical to the card it copies — so once the deck comes
+to rest, `normalize()` silently re-places the track onto the real equivalent with
+the transition off.
+
+Two things `normalize()` has to get right, both learned the hard way:
+
+- **It must carry the lift class across.** Moving the track without moving
+  `is-on` leaves the newly-centred card sitting at `scale(0.94)` for a whole
+  dwell after every wrap.
+- **That swap must not animate.** Both cards show the same thing at the same
+  scale, so the transition is suppressed for a frame; let it animate and the
+  centred card visibly pops from 0.94 to 1 on every loop.
+
+`normalize()` is also called at the top of `go()`, so `idx` can never wander
+outside the rendered range however fast you swipe. And because there are no ends
+any more, the drag has no rubber-band.
+
+### The floor pill
+
+The pin takes the floor's own colour — the same language the store list and the
+floor filter speak. It's on the icon rather than a second code chip because the
+chip was redundant beside the floor name, pushed the pill past its column on
+three of nine cards, and small text in a floor colour couldn't hold contrast on
+the white pill (2.74:1). An icon only needs 3:1.
+
 ## Why the header is two elements
 
 `.brandbar` scrolls away like normal content; `.searchbar` sticks at the top and

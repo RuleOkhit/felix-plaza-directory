@@ -38,23 +38,23 @@
    ── About the order ─────────────────────────────────────────
    Neighbouring banners shouldn't share a background hue, and
    that includes the wrap from the last card back to the first.
-   Current run: butter, stone, sky, mint, blush, dark, steel,
+   Current run: dark, stone, sky, mint, blush, butter, steel,
    sand, lilac.
    ============================================================ */
 
 const FEATURED = [
   {
-    store: 'FRIDO',
-    category: 'Home & Lifestyle',
-    floors: ['con'],
-    headline: 'Everyday home comfort',
-    logo: 'assets/brands/frido.jpg',
-    /* Ships as a yellow square with a wide margin, so it becomes a
-       brand tile and the zoom crops the padding off the wordmark. */
-    logoBox: true,
-    logoZoom: 1.95,
-    logoHeight: 62,
-    brand: { bg: '#FBEBC0', ink: '#C99700' }
+    store: 'PUNJAB GRILL',
+    category: 'Restaurants',
+    floors: ['2f'],
+    headline: 'North Indian dining',
+    /* SVG, used uncropped exactly as supplied. All 35 of its paths
+       are a pale gold, so this banner runs dark and lets the mark
+       sit straight on the background — no plate needed. */
+    logo: 'assets/brands/punjab-grill.svg',
+    logoHeight: 46,
+    dark: true,
+    brand: { bg: '#17120C', ink: '#C9A227' }
   },
   {
     store: 'TISSOT',
@@ -92,17 +92,17 @@ const FEATURED = [
     brand: { bg: '#F8DCEE', ink: '#BD4699' }
   },
   {
-    store: 'PUNJAB GRILL',
-    category: 'Restaurants',
-    floors: ['2f'],
-    headline: 'North Indian dining',
-    /* SVG, used uncropped exactly as supplied. All 35 of its paths
-       are a pale gold, so this banner runs dark and lets the mark
-       sit straight on the background — no plate needed. */
-    logo: 'assets/brands/punjab-grill.svg',
-    logoHeight: 46,
-    dark: true,
-    brand: { bg: '#17120C', ink: '#C9A227' }
+    store: 'FRIDO',
+    category: 'Home & Lifestyle',
+    floors: ['con'],
+    headline: 'Everyday home comfort',
+    logo: 'assets/brands/frido.jpg',
+    /* Ships as a yellow square with a wide margin, so it becomes a
+       brand tile and the zoom crops the padding off the wordmark. */
+    logoBox: true,
+    logoZoom: 1.95,
+    logoHeight: 62,
+    brand: { bg: '#FBEBC0', ink: '#C99700' }
   },
   {
     store: 'SAMSUNG',
@@ -132,4 +132,4 @@ const FEATURED = [
 
 /* How long each banner holds before the next one, in ms.
    This is also how long the progress bar takes to fill. */
-const FEATURED_DWELL = 4500;
+const FEATURED_DWELL = 3600;

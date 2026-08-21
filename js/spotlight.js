@@ -12,6 +12,15 @@
    The bars beside the section title are the timer made visible.
    The active bar fills over FEATURED_DWELL and the deck advances
    the instant it's full. Holding freezes the fill where it is.
+
+   The loop is genuinely endless and always travels forwards; it
+   never reverses. Two clones of each end are rendered either side
+   of the real run, so the last card sits to the left of the first
+   before you have moved at all. Stepping onto a clone looks
+   identical to the real card it copies, so once the deck comes to
+   rest the track is silently re-placed onto the real one with the
+   transition switched off. That swap is invisible, and it lets the
+   next step carry on in the same direction forever.
    ============================================================ */
 
 window.Spotlight = (function () {
@@ -29,8 +38,16 @@ window.Spotlight = (function () {
   var SLIDE_RATIO = 0.74;
   var GAP = 12;
 
+  /* Clones of each end, rendered either side of the real run. Two
+     rather than one so a fast double-swipe still has somewhere to
+     land before the deck is re-placed. */
+  var CLONES = 2;
+  var TRANS_MS = 580;          // must outlast the CSS transform transition
+
   var stage, track, barWrap, slides = [], bars = [];
-  var idx = 0, dir = 1;
+  var N = 0;                   // real cards
+  var idx = CLONES;            // position in the RENDERED track
+  var normTimer = null;
   var stageW = 0, slideW = 0, step = 0, originX = 0;
   var timer = null, startedAt = 0, remain = 0, sized = false;
   var held = false, offScreen = false, tabHidden = false, suspended = false;
@@ -78,9 +95,9 @@ window.Spotlight = (function () {
         '<p class="spot-kicker">' + esc(item.category) + '</p>' +
         '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
         (sub ? '<p class="spot-sub">' + esc(sub) + '</p>' : '') +
-        '<span class="spot-pill">' +
+        '<span class="spot-pill fc-' + esc(floor) + '">' +
           '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="currentColor"/></svg>' +
-          esc(floorName) +
+          '<span class="spot-pill-text">' + esc(floorName) + '</span>' +
         '</span>' +
       '</div>' +
       '<div class="spot-art">' + logo + '</div>' +
@@ -101,6 +118,41 @@ window.Spotlight = (function () {
   }
   function baseX(i) { return originX - i * step; }
 
+  /* Rendered position -> real card. */
+  function realOf(r) { return ((r - CLONES) % N + N) % N; }
+
+  /* A clone shows the same card as its original, so snapping from
+     one to the other is invisible - provided the deck is at rest.
+
+     The lift class has to move across with it. Both the card being
+     left and the one being landed on are showing the same thing at
+     the same scale, so the swap is suppressed for a frame: let it
+     animate and the newly-centred card would visibly pop from 0.94
+     to 1 after every wrap. */
+  function normalize() {
+    var target = CLONES + realOf(idx);
+    if (target === idx) return;
+
+    var from = slides[idx], to = slides[target];
+    var fromCard = from && from.firstElementChild;
+    var toCard = to && to.firstElementChild;
+    if (fromCard) fromCard.style.transition = 'none';
+    if (toCard) toCard.style.transition = 'none';
+
+    idx = target;
+    place(baseX(idx), false);
+    if (from) from.classList.remove('is-on');
+    if (to) to.classList.add('is-on');
+
+    void track.offsetWidth;
+    if (fromCard) fromCard.style.transition = '';
+    if (toCard) toCard.style.transition = '';
+  }
+  function scheduleNormalize() {
+    if (normTimer) clearTimeout(normTimer);
+    normTimer = setTimeout(function () { normTimer = null; normalize(); }, TRANS_MS);
+  }
+
   function sizeStage() {
     if (!slides.length) return;
     var h = Math.ceil(slides[idx].getBoundingClientRect().height);
@@ -118,6 +170,7 @@ window.Spotlight = (function () {
 
   /* ── Progress bars ──────────────────────────── */
   function fillOf(n) { return bars[n] && bars[n].firstElementChild; }
+  function activeFill() { return fillOf(realOf(idx)); }
 
   function currentScale(f) {
     var m = getComputedStyle(f).transform;
@@ -130,12 +183,13 @@ window.Spotlight = (function () {
      belongs to runFill/freezeFill alone, or a snap-back drag
      would flash it empty and refill. */
   function resetBars() {
+    var real = realOf(idx);
     bars.forEach(function (b, n) {
-      b.classList.toggle('is-on', n === idx);
-      b.setAttribute('aria-current', n === idx ? 'true' : 'false');
+      b.classList.toggle('is-on', n === real);
+      b.setAttribute('aria-current', n === real ? 'true' : 'false');
       var f = b.firstElementChild;
       if (!f) return;
-      if (n !== idx) {
+      if (n !== real) {
         f.style.transition = 'none';
         f.style.transform = 'scaleX(0)';
       } else if (neverPlays()) {
@@ -150,7 +204,7 @@ window.Spotlight = (function () {
   }
 
   function runFill() {
-    var f = fillOf(idx);
+    var f = activeFill();
     if (!f) return;
     /* Start from whichever is further along: the time left, or where
        the bar is already drawn. Resuming must never rewind it. */
@@ -163,7 +217,7 @@ window.Spotlight = (function () {
   }
 
   function freezeFill() {
-    var f = fillOf(idx);
+    var f = activeFill();
     if (!f) return;
     /* Read first: clearing the transition cancels it, and the
        computed value snaps to the target the moment you do. */
@@ -185,12 +239,8 @@ window.Spotlight = (function () {
     if (remain <= 0) remain = FEATURED_DWELL;
     runFill();
     startedAt = Date.now();
-    timer = setTimeout(function () {
-      remain = FEATURED_DWELL;
-      if (idx + dir > FEATURED.length - 1) dir = -1;
-      else if (idx + dir < 0) dir = 1;
-      goTo(idx + dir);
-    }, remain);
+    /* Always forwards. The clones mean there is no end to turn at. */
+    timer = setTimeout(function () { go(1); }, remain);
   }
 
   function pause() {
@@ -206,14 +256,27 @@ window.Spotlight = (function () {
     place(baseX(idx), true);
     sizeStage();
     slides.forEach(function (s, n) { s.classList.toggle('is-on', n === idx); });
-    var brand = (FEATURED[idx] || {}).brand || {};
+    var brand = (FEATURED[realOf(idx)] || {}).brand || {};
     barWrap.style.setProperty('--brand', safeColor(brand.ink, 'var(--accent)'));
     resetBars();
+    scheduleNormalize();
   }
 
-  function goTo(n) {
-    n = Math.max(0, Math.min(FEATURED.length - 1, n));
-    if (n !== idx) { idx = n; remain = FEATURED_DWELL; }
+  /* Step by one card in either direction. Normalising first keeps
+     idx inside the rendered range no matter how fast you swipe. */
+  function go(d) {
+    normalize();
+    idx += d;
+    remain = FEATURED_DWELL;
+    settle();
+    play();
+  }
+
+  /* Jump straight to a real card - used by the progress bars. */
+  function goToReal(n) {
+    normalize();
+    var target = CLONES + ((n % N) + N) % N;
+    if (target !== idx) { idx = target; remain = FEATURED_DWELL; }
     settle();
     play();
   }
@@ -257,8 +320,8 @@ window.Spotlight = (function () {
       if (dt > 0) velocity = (e.clientX - lastX) / dt;   // px per ms
       lastX = e.clientX; lastT = e.timeStamp;
 
-      var over = (idx === 0 && dx > 0) || (idx === FEATURED.length - 1 && dx < 0);
-      place(baseX(idx) + (over ? dx * 0.32 : dx), false);
+      /* No rubber band: the loop has no ends to push against. */
+      place(baseX(idx) + dx, false);
     }, { passive: true });
 
     function finish(cancelled) {
@@ -274,9 +337,8 @@ window.Spotlight = (function () {
         /* Flick beats distance — a short fast swipe should still turn */
         var flick = Math.abs(velocity) > 0.45 && Math.abs(dx) > 12;
         var far   = Math.abs(dx) > step * 0.22;
-        var step  = (flick || far) ? (dx < 0 ? 1 : -1) : 0;
-        if (step) dir = step;
-        goTo(idx + step);
+        var stepBy = (flick || far) ? (dx < 0 ? 1 : -1) : 0;
+        if (stepBy) { go(stepBy); } else { settle(); play(); }
       }
       decided = false; horizontal = false;
     }
@@ -284,8 +346,8 @@ window.Spotlight = (function () {
     window.addEventListener('pointercancel', function () { finish(true); });
 
     stage.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight') { dir = 1;  goTo(idx + 1); e.preventDefault(); }
-      if (e.key === 'ArrowLeft')  { dir = -1; goTo(idx - 1); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { go(1);  e.preventDefault(); }
+      if (e.key === 'ArrowLeft')  { go(-1); e.preventDefault(); }
     });
 
     stage.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { held = true; pause(); } });
@@ -312,8 +374,17 @@ window.Spotlight = (function () {
       if (!known[f.store]) console.warn('[spotlight] "' + f.store + '" is not in the directory data.');
     });
 
-    track.innerHTML = FEATURED.map(function (item) {
-      return '<div class="spot-slide">' + cardHTML(item) + '</div>';
+    /* [last two] + [all] + [first two] so both edges already have a
+       neighbour to show, including before the deck has moved. */
+    N = FEATURED.length;
+    var order = [], i;
+    if (N > 1) { for (i = 0; i < CLONES; i++) { order.push(((N - CLONES + i) % N + N) % N); } }
+    for (i = 0; i < N; i++) { order.push(i); }
+    if (N > 1) { for (i = 0; i < CLONES; i++) { order.push(i % N); } }
+    idx = (N > 1) ? CLONES : 0;
+
+    track.innerHTML = order.map(function (k) {
+      return '<div class="spot-slide">' + cardHTML(FEATURED[k]) + '</div>';
     }).join('');
     slides = Array.prototype.slice.call(track.querySelectorAll('.spot-slide'));
 
@@ -325,13 +396,11 @@ window.Spotlight = (function () {
     barWrap.addEventListener('click', function (e) {
       var b = e.target.closest('.spot-bar');
       if (!b) return;
-      var n = +b.dataset.i;
-      if (n !== idx) dir = n > idx ? 1 : -1;
-      goTo(n);
+      goToReal(+b.dataset.i);
     });
 
     measure();
-    place(baseX(0), false);
+    place(baseX(idx), false);
     remain = FEATURED_DWELL;
     settle();
     bindDrag();

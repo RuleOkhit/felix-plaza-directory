@@ -122,7 +122,26 @@
   font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.spot-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+/* The pin carries the floor's own colour — the same language the
+   store list and the floor filter already speak, so the pill reads
+   as wayfinding rather than a caption. Colour on the icon rather
+   than a second chip: it costs no width, and small text in a floor
+   colour can't hold contrast on either pill. */
+.spot-pill svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--pin); }
+.spot-pill-text { overflow: hidden; text-overflow: ellipsis; }
+
+/* Light banner: dark pill, so the pin takes the night palette.
+   Dark banner: white pill, so it takes the day palette. */
+.spot-pill.fc-con { --pin: var(--n-con); }
+.spot-pill.fc-gf  { --pin: var(--n-gf);  }
+.spot-pill.fc-1f  { --pin: var(--n-1f);  }
+.spot-pill.fc-2f  { --pin: var(--n-2f);  }
+.spot-pill.fc-3f  { --pin: var(--n-3f);  }
+.is-dark .spot-pill.fc-con { --pin: var(--f-con); }
+.is-dark .spot-pill.fc-gf  { --pin: #4b8f00;      }
+.is-dark .spot-pill.fc-1f  { --pin: var(--f-1f);  }
+.is-dark .spot-pill.fc-2f  { --pin: var(--f-2f);  }
+.is-dark .spot-pill.fc-3f  { --pin: var(--f-3f);  }
 
 /* ── Art side ───────────────────────────────── */
 .spot-art {
