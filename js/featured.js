@@ -71,7 +71,7 @@ const FEATURED = [
        squeezed and nothing is left half-showing. */
     creative: 'assets/creatives/punjab-grill.jpg',
     creativeFocus: '50% 0%',
-    headline: 'Our 61st outlet in India',
+    headline: '61st outlet in India',
     logo: 'assets/brands/punjab-grill.svg',
     dark: true,
     brand: { bg: '#17120C', ink: '#C9A227' }

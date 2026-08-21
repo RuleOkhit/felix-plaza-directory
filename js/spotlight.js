@@ -71,6 +71,7 @@ window.Spotlight = (function () {
     var floor = (item.floors || [])[0];
     var meta = FLOORS.filter(function (x) { return x.key === floor; })[0];
     var floorName = meta ? meta.name : '';
+    var floorCode = meta ? meta.short : '';
 
     var zoom = (typeof item.logoZoom === 'number' && item.logoZoom > 0)
       ? Math.min(4, item.logoZoom) : 1;
@@ -109,9 +110,9 @@ window.Spotlight = (function () {
         '<p class="spot-kicker">' + esc(item.category) + '</p>' +
         '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
         (sub ? '<p class="spot-sub">' + esc(sub) + '</p>' : '') +
-        '<span class="spot-pill fc-' + esc(floor) + '">' +
-          '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="currentColor"/></svg>' +
-          '<span class="spot-pill-text">' + esc(floorName) + '</span>' +
+        '<span class="spot-loc fc-' + esc(floor) + '">' +
+          '<b class="spot-loc-code">' + esc(floorCode) + '</b>' +
+          '<span class="visually-hidden">' + esc(floorName) + '</span>' +
         '</span>' +
       '</div>' +
       (isPhoto ? '' : '<div class="spot-art">' + logo + '</div>') +

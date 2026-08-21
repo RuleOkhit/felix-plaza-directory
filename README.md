@@ -128,13 +128,19 @@ Two things `normalize()` has to get right, both learned the hard way:
 outside the rendered range however fast you swipe. And because there are no ends
 any more, the drag has no rubber-band.
 
-### The floor pill
+### The floor marker
 
-The pin takes the floor's own colour — the same language the store list and the
-floor filter speak. It's on the icon rather than a second code chip because the
-chip was redundant beside the floor name, pushed the pill past its column on
-three of nine cards, and small text in a floor colour couldn't hold contrast on
-the white pill (2.74:1). An icon only needs 3:1.
+Just the floor code on a pane of glass — 31–37px wide, against roughly 108px for
+the text pill it replaced, which was eating most of the copy column.
+
+The glass is tinted with the floor's own colour so the marker still speaks the
+directory's language, but **the code itself never is.** Mid-tones like the GF
+green and the 2F orange measure barely 3:1 at that size against a light chip.
+Tint carries the identity, ink carries the legibility: 11.04:1 worst case on the
+light banners, and 9.76:1 for the white code over the photo card, where the glass
+darkens instead so it can clear whatever is behind it.
+
+The full floor name stays in the markup for screen readers.
 
 ## Why the header is two elements
 
