@@ -17,7 +17,12 @@
    they render in. Anything featured in js/featured.js must
    match a `name` below exactly, or it logs a console warning.
 
-   Stores: 102   Sections: 20
+   ADDING A STORE HERE MEANS TAKING IT OUT OF THE "OPENING SOON"
+   TICKER IN index.html. A store can't be opening soon and be in
+   the directory at the same time -- being listed here is what
+   says it's open. Check the ticker on every addition.
+
+   Stores: 101   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -117,8 +122,11 @@ const SECTIONS = [
     stores: [
       { name: 'ADIDAS', floors: ['1f'] },
       { name: 'ASICS', floors: ['1f'] },
-      { name: 'PUMA', floors: ['1f'] },
-      { name: 'SKECHERS', floors: ['1f'] }
+      { name: 'PUMA', floors: ['1f'] }
+      /* SKECHERS pulled from the listing 2026-09-07. Kept here rather
+         than deleted so it goes back in as one uncommented line if it
+         returns; nothing else in the project references the name. */
+      /* , { name: 'SKECHERS', floors: ['1f'] } */
     ]
   },
   {

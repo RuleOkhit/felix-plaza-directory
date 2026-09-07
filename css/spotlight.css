@@ -259,20 +259,15 @@
 
      Note percentage padding resolves against WIDTH on all four
      sides, so the vertical values are divided by the 3:2 ratio:
-     3% of the width is the 4.5% of the height it's aiming at. */
-  padding: 3% 16px 5.7% 6%;
+     2.6% of the width is the 3.9% of the height it's aiming at. */
+  padding: 2.6% 16px 5.7% 6%;
 }
 .spot-card--art .spot-copy { width: 36%; z-index: 2; }
-/* 8.5px rather than the banner's 9px, and tighter tracking, for the
-   same reason: what's left between the card edge and the artwork's
-   headline is about 15px, and the line has to sit inside it. */
-.spot-card--art .spot-kicker { font-size: 8.5px; letter-spacing: 0.12em; }
-/* The kicker takes the artwork's own ink rather than the banner
-   default, which is a 55%-alpha near-black: on this cream that
-   measures 3.9:1, at 8.5px uppercase. The green the designer set the
-   headline in measures 5.7:1 against the darkest part of the corner
-   it sits in. */
-.spot-card--art .spot-kicker { color: var(--ink, var(--fg-dim)); opacity: 0.85; }
+/* The kicker is deliberately NOT restyled here. An earlier pass set it
+   in the artwork's own green, which read as part of the picture rather
+   than as the directory speaking — the one label on the card that is
+   ours has to look like the label on every other card. Same size,
+   same tracking, same --fg-dim ink as the eight built banners. */
 
 /* ── Featured badge — the reference's "Ad" corner ── */
 .spot-badge {

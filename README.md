@@ -33,6 +33,13 @@ felix-directory/
 directly; there is no generator. Nothing else in the project hard-codes a store
 name.
 
+**Adding a store here means taking it out of the "Opening Soon" ticker in
+`index.html`** — both copies of it; the list is duplicated to keep the marquee
+loop seamless. Being listed in the directory is what says a store is open, so a
+name in both places contradicts itself on the same screen. Watch for spelling
+drift between the two: the ticker said "W FOR WOMEN" where the directory entry
+is "W".
+
 **`js/featured.js`** — which stores appear in Store Spotlight. Each entry is one
 banner.
 
@@ -105,9 +112,11 @@ Three things that column cost, all worth knowing before the next one:
   every other. Percentage padding resolves against **width** on all four
   sides, so the vertical values are divided by the 3:2 ratio — 3% of the
   width is the 4.5% of the height it's aiming at.
-- The kicker is 8.5px at 0.12em rather than the banner's 9px/0.16em. What's
-  left between the card edge and the artwork's headline is about 15px, and
-  the line has to sit inside it.
+- **Don't restyle the kicker to match the artwork.** An earlier pass set it
+  in Rajwada Bhog's own green and it read as part of the picture rather than
+  as the directory speaking. The one label on the card that is ours has to
+  look like the label on every other card — same size, same tracking, same
+  `--fg-dim` ink. The card's top padding is tuned around that 9px line.
 - The badge needed a plate of its own (`.spot-card.spot-card--art`, doubled
   class so it outranks the light/dark token block rather than merely
   preceding it). Its corner is the one busy part of the picture — green

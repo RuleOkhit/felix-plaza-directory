@@ -109,7 +109,7 @@ window.Spotlight = (function () {
     return '<article class="spot-card' +
         (bare ? ' spot-card--art' : (isPhoto ? ' spot-card--photo' : '')) +
         (item.dark ? ' is-dark' : '') + '" style="--bg:' + bg +
-        (bare ? ';--ink:' + safeColor(brand.ink, 'currentColor') : '') + '">' +
+        '">' +
       (isPhoto
         ? '<img class="spot-photo" src="' + esc(item.creative) + '" alt="' +
             (bare ? esc(item.store) : '') + '" ' +
