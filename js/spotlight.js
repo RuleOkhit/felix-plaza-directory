@@ -78,7 +78,8 @@ window.Spotlight = (function () {
     var lh = (typeof item.logoHeight === 'number' && item.logoHeight > 0)
       ? ';--logo-h:' + Math.min(72, item.logoHeight) + 'px' : '';
 
-    var img = '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">';
+    var img = item.logo
+      ? '<img src="' + esc(item.logo) + '" alt="' + esc(item.store) + '">' : '';
     var logo = item.logoBox
       ? '<span class="spot-logo spot-logo--box" style="--zoom:' + zoom + lh + '">' + img + '</span>'
       : '<span class="spot-logo"' + (lh ? ' style="' + lh.slice(1) + '"' : '') + '>' + img + '</span>';
@@ -91,6 +92,13 @@ window.Spotlight = (function () {
     var isPhoto = !!item.creative;
     var focus = /^[\w\s%]+$/.test(item.creativeFocus || '') ? item.creativeFocus : '50% 50%';
 
+    /* Some artwork arrives already finished — its own headline, its
+       own logo, its own message. Adding a scrim and a second headline
+       on top of that competes with it. `creativeBare` strips the card
+       back to the artwork plus the two things it can't know: the
+       category and the floor. */
+    var bare = isPhoto && item.creativeBare === true;
+
     /* Kicker = category, headline = the message, sub = the store.
        Same shape as the reference banners, which name the brand in
        the supporting line and let the message lead. Without a
@@ -98,24 +106,29 @@ window.Spotlight = (function () {
     var headline = item.headline || item.store;
     var sub = item.headline ? item.store : '';
 
-    return '<article class="spot-card' + (isPhoto ? ' spot-card--photo' : '') +
-        (item.dark ? ' is-dark' : '') + '" style="--bg:' + bg + '">' +
+    return '<article class="spot-card' +
+        (bare ? ' spot-card--art' : (isPhoto ? ' spot-card--photo' : '')) +
+        (item.dark ? ' is-dark' : '') + '" style="--bg:' + bg +
+        (bare ? ';--ink:' + safeColor(brand.ink, 'currentColor') : '') + '">' +
       (isPhoto
-        ? '<img class="spot-photo" src="' + esc(item.creative) + '" alt="" ' +
+        ? '<img class="spot-photo" src="' + esc(item.creative) + '" alt="' +
+            (bare ? esc(item.store) : '') + '" ' +
             'style="object-position:' + focus + '">' +
-          '<span class="spot-scrim"></span>' +
-          '<span class="spot-mark">' + img + '</span>'
+          (bare ? ''
+                : '<span class="spot-scrim"></span>' +
+                  '<span class="spot-mark">' + img + '</span>')
         : '') +
       '<div class="spot-copy">' +
         '<p class="spot-kicker">' + esc(item.category) + '</p>' +
-        '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
-        (sub ? '<p class="spot-sub">' + esc(sub) + '</p>' : '') +
+        (bare ? ''
+              : '<h3 class="spot-headline">' + esc(headline) + '</h3>' +
+                (sub ? '<p class="spot-sub">' + esc(sub) + '</p>' : '')) +
         '<span class="spot-loc fc-' + esc(floor) + '">' +
           '<b class="spot-loc-code">' + esc(floorCode) + '</b>' +
           '<span class="visually-hidden">' + esc(floorName) + '</span>' +
         '</span>' +
       '</div>' +
-      (isPhoto ? '' : '<div class="spot-art">' + logo + '</div>') +
+      (isPhoto || !img ? '' : '<div class="spot-art">' + logo + '</div>') +
       '<span class="spot-badge">Featured</span>' +
     '</article>';
   }

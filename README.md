@@ -83,6 +83,38 @@ at **4.51:1** for white text against the bright cloth on the right of the copy
 column — passing AA by a hundredth. The current stops measure **8.67:1**. If you
 add another creative, re-check it; a lighter photo will need more scrim.
 
+### Finished artwork
+
+Some creatives arrive as complete banners — their own headline, their own
+logo, their own message. Laying a scrim and a second headline over one of
+those is just two designs arguing. `creativeBare: true` strips the card back
+to the picture plus the two things it can't know about itself: the category
+and the floor.
+
+Where those two sit is a property of the artwork, not of the stylesheet.
+These designs reserve a quiet column for their own lockup; that's the space
+to borrow. Rajwada Bhog's is the lower left — flat cream from x=60 to x=345
+of 1080, and from y=470 down — which is why `.spot-card--art .spot-copy` is
+36% wide and bottom-aligned. **A creative that reserves its space somewhere
+else needs its own rule.**
+
+Two things that column cost, both worth knowing before the next one:
+
+- The kicker had to drop to 8.5px at 0.10em. "RESTAURANTS" is 83px at the
+  banner default and the column is 84px. The cream runs to x=409 on the
+  kicker's rows but only to x=347 on the chip's, and one column can't be two
+  widths.
+- The badge needed a plate of its own (`.spot-card.spot-card--art`, doubled
+  class so it outranks the light/dark token block rather than merely
+  preceding it). Its corner is the one busy part of the picture, and the
+  light default is a 10% near-black wash that disappears there.
+
+**Crop the file to 3:2 before it ships**, so the card shows it whole instead
+of cropping it again. Rajwada Bhog is the top 720 rows of a 1080×1350
+original — exactly 3:2 — which keeps the headline, the mark and the biryani
+and drops the "NOW OPEN @ Felix Plaza" band, redundant on a directory that
+only lists stores that are open.
+
 ### Headlines
 
 `headline` is the message slot. What ships is plain factual description of what

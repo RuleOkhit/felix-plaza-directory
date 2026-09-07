@@ -231,6 +231,45 @@
 .spot-mark img { height: 27px; width: auto; display: block; }
 .spot-mark img[src$=".svg"] { height: 27px; }
 
+/* ── Artwork card ───────────────────────────────
+   For creatives that arrive as finished banners: the
+   artwork already has a headline, a logo and a message
+   of its own, so nothing is laid over it. No scrim, no
+   second headline, no corner mark — just the picture,
+   plus the two things it can't know about itself.
+
+   The file is cropped to 3:2 before it ships, so the
+   card shows it whole rather than cropping it again.
+
+   Where the copy goes is a property of the artwork, not
+   of this stylesheet: these designs reserve a quiet
+   column for their own lockup, and that is where the
+   category and floor sit. Rajwada Bhog's is the lower
+   left — measured flat cream from x=60 to x=345 of 1080
+   and from y=470 down, which is why the column is 32%
+   wide and bottom-aligned. A creative that reserves its
+   space elsewhere needs its own rule here. */
+.spot-card--art {
+  background: var(--bg, var(--surface));
+  padding-left: 20px;          /* clears the dashed keyline */
+}
+.spot-card--art .spot-copy {
+  width: 36%; z-index: 2;
+  justify-content: flex-end;   /* sit in the reserved column */
+  gap: 7px;
+}
+/* "RESTAURANTS" is 83px at the banner default and the column is 84px
+   wide, so it ellipsised. Tightened rather than widened: the cream
+   runs to x=409 on the kicker's rows but only to x=347 on the chip's,
+   and one column can't be two widths. */
+.spot-card--art .spot-kicker { font-size: 8.5px; letter-spacing: 0.10em; }
+/* The kicker takes the artwork's own ink rather than the
+   banner default, which is a 55%-alpha near-black: on cream
+   that measures 3.9:1 and this is 9px uppercase. The green
+   the designer set the headline in measures 6.9:1. */
+.spot-card--art .spot-kicker { color: var(--ink, var(--fg-dim)); opacity: 0.85; }
+.spot-card--art .spot-loc { margin-top: 0; }
+
 /* ── Featured badge — the reference's "Ad" corner ── */
 .spot-badge {
   position: absolute; right: 10px; bottom: 10px; z-index: 3;
@@ -255,6 +294,16 @@
   --fg: #fff;
   --fg-dim: rgba(255, 255, 255, 0.60);
   --badge-bg: rgba(255, 255, 255, 0.16); --badge-fg: rgba(255, 255, 255, 0.72);
+}
+
+/* The artwork card's badge corner is the one place the picture is
+   busy — green ground with a bright metal highlight running through
+   it — so it gets a plate of its own. The light default is a 10%
+   near-black wash, which vanishes there. Doubled class because this
+   has to outrank the block above, not just precede it. */
+.spot-card.spot-card--art {
+  --badge-bg: rgba(18, 14, 8, 0.58);
+  --badge-fg: rgba(255, 255, 255, 0.94);
 }
 
 /* ── Empty state ────────────────────────────── */
