@@ -92,28 +92,34 @@ to the picture plus the two things it can't know about itself: the category
 and the floor.
 
 Where those two sit is a property of the artwork, not of the stylesheet.
-These designs reserve a quiet column for their own lockup; that's the space
-to borrow. Rajwada Bhog's is the lower left — flat cream from x=60 to x=345
-of 1080, and from y=470 down — which is why `.spot-card--art .spot-copy` is
-36% wide and bottom-aligned. **A creative that reserves its space somewhere
-else needs its own rule.**
+Rajwada Bhog leaves cream margin above its headline and down its left side,
+so the category sits top left — the corner the built banners put it in — and
+the floor keeps the bottom of that column. **A creative that reserves its
+space somewhere else needs its own rule.**
 
-Two things that column cost, both worth knowing before the next one:
+Three things that column cost, all worth knowing before the next one:
 
-- The kicker had to drop to 8.5px at 0.10em. "RESTAURANTS" is 83px at the
-  banner default and the column is 84px. The cream runs to x=409 on the
-  kicker's rows but only to x=347 on the chip's, and one column can't be two
-  widths.
+- **The padding is in percentages**, because what it lines up with is a
+  percentage: the artwork's own margins. Its headline ink starts 6.0% from
+  the left and 13.3% down. Fixed pixels match at one card width and drift at
+  every other. Percentage padding resolves against **width** on all four
+  sides, so the vertical values are divided by the 3:2 ratio — 3% of the
+  width is the 4.5% of the height it's aiming at.
+- The kicker is 8.5px at 0.12em rather than the banner's 9px/0.16em. What's
+  left between the card edge and the artwork's headline is about 15px, and
+  the line has to sit inside it.
 - The badge needed a plate of its own (`.spot-card.spot-card--art`, doubled
   class so it outranks the light/dark token block rather than merely
-  preceding it). Its corner is the one busy part of the picture, and the
-  light default is a 10% near-black wash that disappears there.
+  preceding it). Its corner is the one busy part of the picture — green
+  ground with a bright metal highlight through it — and the light default is
+  a 10% near-black wash that disappears there.
 
-**Crop the file to 3:2 before it ships**, so the card shows it whole instead
-of cropping it again. Rajwada Bhog is the top 720 rows of a 1080×1350
-original — exactly 3:2 — which keeps the headline, the mark and the biryani
-and drops the "NOW OPEN @ Felix Plaza" band, redundant on a directory that
-only lists stores that are open.
+**Ask for the file at 3:2**, so the card shows it whole instead of cropping
+it again. Rajwada Bhog's is supplied at 1001×667, which is 3:2 to within half
+a pixel and needs no `creativeFocus` at all. When artwork only exists in
+another shape, crop it to 3:2 yourself rather than leaning on `creativeFocus`
+— that crops from the centre of whatever it's given, and a bare card has no
+scrim to hide a bad edge under.
 
 ### Headlines
 

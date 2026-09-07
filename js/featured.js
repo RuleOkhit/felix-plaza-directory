@@ -51,13 +51,31 @@
    ── About the order ─────────────────────────────────────────
    Neighbouring banners shouldn't share a background hue, and
    that includes the wrap from the last card back to the first.
-   Current run: dark, sky, artwork, mint, blush, butter, steel,
-   sand, lilac. Rajwada Bhog took Tissot's slot but not its
-   position -- it sits after Vivo so the two photo-led cards
-   (Punjab Grill and this one) aren't neighbours.
+   Current run: artwork, dark, sky, mint, blush, butter, steel,
+   sand, lilac. The two photo-led cards lead the deck back to
+   back, which is a deliberate choice and not an oversight --
+   one is bright cream, the other near-black, so they don't
+   read as a pair.
    ============================================================ */
 
 const FEATURED = [
+  {
+    store: 'RAJWADA BHOG',
+    category: 'Restaurants',
+    floors: ['3f'],
+    /* A finished piece of brand artwork, not a photograph to build a
+       banner from -- it already carries its own headline and its own
+       logo. So `creativeBare` turns off everything the banner would
+       normally add on top: no scrim, no headline of ours, no corner
+       mark. The card becomes the artwork plus the two things only the
+       directory can say -- the category and the floor.
+
+       Supplied at 1001x667, which is 3:2 to within half a pixel, so it
+       lands in the card whole and needs no creativeFocus. */
+    creative: 'assets/creatives/rajwada-bhog.jpg',
+    creativeBare: true,
+    brand: { bg: '#F0E9D9', ink: '#375E22' }
+  },
   {
     store: 'PUNJAB GRILL',
     category: 'Restaurants',
@@ -91,28 +109,6 @@ const FEATURED = [
     headline: 'Smartphones & more',
     logo: 'assets/brands/vivo.png',
     brand: { bg: '#D3E6F7', ink: '#0070B8' }
-  },
-  {
-    store: 'RAJWADA BHOG',
-    category: 'Restaurants',
-    floors: ['3f'],
-    /* A finished piece of brand artwork, not a photograph to build a
-       banner from -- it already carries its own headline, its own
-       logo and its own "now open" line. So `creativeBare` turns off
-       everything the banner would normally add on top: no scrim, no
-       headline of ours, no corner mark. The card becomes the artwork
-       plus the two things only the directory can say -- the category
-       and the floor -- set in the empty column the designer left at
-       the lower left, where the Felix Plaza lockup used to sit.
-
-       Cropped to the top 720 rows of the 1080x1350 original, which is
-       exactly 3:2 and so lands in the card 1:1 with no further crop.
-       That keeps "Taste the ROYAL Tradition", the Rajwada Bhog mark
-       and the biryani, and drops the "NOW OPEN @ Felix Plaza" band --
-       redundant on a directory that only lists stores that are open. */
-    creative: 'assets/creatives/rajwada-bhog.jpg',
-    creativeBare: true,
-    brand: { bg: '#F0E9D9', ink: '#375E22' }
   },
   {
     store: 'BABYSHOP',

@@ -242,33 +242,37 @@
    card shows it whole rather than cropping it again.
 
    Where the copy goes is a property of the artwork, not
-   of this stylesheet: these designs reserve a quiet
-   column for their own lockup, and that is where the
-   category and floor sit. Rajwada Bhog's is the lower
-   left — measured flat cream from x=60 to x=345 of 1080
-   and from y=470 down, which is why the column is 32%
-   wide and bottom-aligned. A creative that reserves its
-   space elsewhere needs its own rule here. */
+   of this stylesheet. Rajwada Bhog leaves cream margin
+   above its headline and down its left side, so the
+   category sits top left — the same corner the built
+   banners put it in — and the floor keeps the bottom of
+   that column, where the cream runs to x=312 of 1001.
+   A creative that reserves its space elsewhere needs
+   its own rule here. */
 .spot-card--art {
   background: var(--bg, var(--surface));
-  padding-left: 20px;          /* clears the dashed keyline */
+  /* Padding in percentages, not pixels, because what it has to line
+     up with is a percentage: the artwork's own margins. Its headline
+     ink starts 6.0% from the left and 13.3% down, so the kicker sits
+     flush with "Taste the" and clear above it. Fixed pixels would
+     match at one card width and drift at every other.
+
+     Note percentage padding resolves against WIDTH on all four
+     sides, so the vertical values are divided by the 3:2 ratio:
+     3% of the width is the 4.5% of the height it's aiming at. */
+  padding: 3% 16px 5.7% 6%;
 }
-.spot-card--art .spot-copy {
-  width: 36%; z-index: 2;
-  justify-content: flex-end;   /* sit in the reserved column */
-  gap: 7px;
-}
-/* "RESTAURANTS" is 83px at the banner default and the column is 84px
-   wide, so it ellipsised. Tightened rather than widened: the cream
-   runs to x=409 on the kicker's rows but only to x=347 on the chip's,
-   and one column can't be two widths. */
-.spot-card--art .spot-kicker { font-size: 8.5px; letter-spacing: 0.10em; }
-/* The kicker takes the artwork's own ink rather than the
-   banner default, which is a 55%-alpha near-black: on cream
-   that measures 3.9:1 and this is 9px uppercase. The green
-   the designer set the headline in measures 6.9:1. */
+.spot-card--art .spot-copy { width: 36%; z-index: 2; }
+/* 8.5px rather than the banner's 9px, and tighter tracking, for the
+   same reason: what's left between the card edge and the artwork's
+   headline is about 15px, and the line has to sit inside it. */
+.spot-card--art .spot-kicker { font-size: 8.5px; letter-spacing: 0.12em; }
+/* The kicker takes the artwork's own ink rather than the banner
+   default, which is a 55%-alpha near-black: on this cream that
+   measures 3.9:1, at 8.5px uppercase. The green the designer set the
+   headline in measures 5.7:1 against the darkest part of the corner
+   it sits in. */
 .spot-card--art .spot-kicker { color: var(--ink, var(--fg-dim)); opacity: 0.85; }
-.spot-card--art .spot-loc { margin-top: 0; }
 
 /* ── Featured badge — the reference's "Ad" corner ── */
 .spot-badge {
