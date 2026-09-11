@@ -17,7 +17,7 @@ felix-directory/
 │   ├── store-list.css    grouped store cards
 │   └── footer.css        footer + scroll-to-top
 ├── js/
-│   ├── data.js           ← the directory. 99 stores, 20 sections
+│   ├── data.js           ← the directory. 102 stores, 20 sections
 │   ├── featured.js       ← which stores are in the Spotlight
 │   ├── spotlight.js      Spotlight rendering + rotation
 │   ├── directory.js      list, filters, search, category sheet
