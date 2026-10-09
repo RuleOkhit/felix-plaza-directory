@@ -22,7 +22,7 @@
    the directory at the same time -- being listed here is what
    says it's open. Check the ticker on every addition.
 
-   Stores: 104   Sections: 20
+   Stores: 105   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -211,7 +211,8 @@ const SECTIONS = [
   {
     cat: 'kids', title: 'Kid\'s Fashion',
     stores: [
-      { name: 'BABYSHOP', floors: ['2f'] }
+      { name: 'BABYSHOP', floors: ['2f'] },
+      { name: 'PURPLE UNITED KIDS', floors: ['2f'] }
     ]
   },
   {
