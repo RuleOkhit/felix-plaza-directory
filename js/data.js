@@ -22,7 +22,7 @@
    the directory at the same time -- being listed here is what
    says it's open. Check the ticker on every addition.
 
-   Stores: 105   Sections: 20
+   Stores: 106   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -135,6 +135,7 @@ const SECTIONS = [
       { name: 'AMRITSARI EXPRESS', floors: ['3f'] },
       { name: 'BURGER KING', floors: ['3f'] },
       { name: 'CAFÉ CHENNAI', floors: ['3f'] },
+      { name: "DOMINO'S", floors: ['3f'] },
       { name: 'GIANI ICE CREAM', floors: ['3f'] },
       { name: 'HALDIRAM\'S', floors: ['3f'] },
       { name: 'HOUSE OF CANDY', floors: ['3f'] },
