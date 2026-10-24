@@ -22,7 +22,7 @@
    the directory at the same time -- being listed here is what
    says it's open. Check the ticker on every addition.
 
-   Stores: 106   Sections: 20
+   Stores: 108   Sections: 20
    ============================================================ */
 
 /* Floors, in the order they appear in the building. */
@@ -103,6 +103,7 @@ const SECTIONS = [
       { name: 'LIBAS', floors: ['2f'] },
       { name: 'MEENA BAZAAR', floors: ['2f'] },
       { name: 'SABHYATA', floors: ['2f'] },
+      { name: 'SRI RAM AND SON', floors: ['1f'] },
       { name: 'TASVA', floors: ['2f'] },
       { name: 'W', floors: ['2f'] }
     ]
@@ -173,7 +174,8 @@ const SECTIONS = [
       { name: 'ETHERA', floors: ['gf'] },
       { name: 'GIVA', floors: ['gf'] },
       { name: 'LIMELIGHT', floors: ['gf'] },
-      { name: 'PALMONAS', floors: ['gf'] }
+      { name: 'PALMONAS', floors: ['gf'] },
+      { name: 'PUSHPANJALI JEWELS', floors: ['gf'] }
     ]
   },
   {
