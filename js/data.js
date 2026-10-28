@@ -82,6 +82,7 @@ const SECTIONS = [
       { name: 'RARE RABBIT', floors: ['gf'] },
       { name: 'RAREISM', floors: ['gf'] },
       { name: 'SNITCH', floors: ['1f'] },
+      { name: 'SRI RAM AND SON', floors: ['1f'] },
       { name: 'STYLE UNION', floors: ['con'] },
       { name: 'SWEET DREAMS', floors: ['2f'] },
       { name: 'THE BEAR HOUSE', floors: ['1f'] },
@@ -103,7 +104,6 @@ const SECTIONS = [
       { name: 'LIBAS', floors: ['2f'] },
       { name: 'MEENA BAZAAR', floors: ['2f'] },
       { name: 'SABHYATA', floors: ['2f'] },
-      { name: 'SRI RAM AND SON', floors: ['1f'] },
       { name: 'TASVA', floors: ['2f'] },
       { name: 'W', floors: ['2f'] }
     ]
