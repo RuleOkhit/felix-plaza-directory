@@ -263,6 +263,31 @@
   padding: 2.6% 16px 5.7% 6%;
 }
 .spot-card--art .spot-copy { width: 36%; z-index: 2; }
+
+/* Cinepolis is the "reserves its space elsewhere" case the note above
+   warns about. Its left column runs nearly the full height -- logo at
+   the top, feature strip ending at 86% of it -- so the band left under
+   the strip is 14% of the height while the floor marker is 13% of it.
+   There is no room to sit under the artwork the way Rajwada Bhog's
+   marker does, and at the shared 36% the kicker was clipping to
+   "ENTERTAINM..." ("Entertainment" wants 97px; 36% gives 88px).
+
+   Both are fixed by letting the copy column span the card's content
+   box. The kicker is flex-start so it stays in the top left margin the
+   artwork leaves (its own content starts 15.3% down and 7.1% in), and
+   the marker can now anchor to the card's top right -- over the
+   auditorium ceiling, which measures mean luma 30 with little
+   variation, so the dark glass and white code sit clean on it. The
+   gold arc is further left and the Featured badge is bottom right, so
+   nothing collides.
+
+   :has() scopes this to the one creative, which keeps Rajwada Bhog on
+   the shared rule and avoids making spotlight.js emit a per-store
+   class for a purely visual exception. */
+.spot-card--art:has(.spot-photo[src*="cinepolis"]) .spot-copy { width: 100%; }
+.spot-card--art:has(.spot-photo[src*="cinepolis"]) .spot-loc {
+  position: absolute; top: 0; right: 0; margin-top: 0;
+}
 /* The kicker is deliberately NOT restyled here. An earlier pass set it
    in the artwork's own green, which read as part of the picture rather
    than as the directory speaking — the one label on the card that is

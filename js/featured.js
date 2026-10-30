@@ -51,14 +51,51 @@
    ── About the order ─────────────────────────────────────────
    Neighbouring banners shouldn't share a background hue, and
    that includes the wrap from the last card back to the first.
-   Current run: artwork, dark, sky, mint, blush, butter, steel,
-   sand, lilac. The two photo-led cards lead the deck back to
-   back, which is a deliberate choice and not an oversight --
-   one is bright cream, the other near-black, so they don't
-   read as a pair.
+   Current run: purple artwork, cream artwork, dark, mint,
+   blush, butter, steel, sand, lilac. Three photo-led cards now
+   lead the deck back to back, which is deliberate and not an
+   oversight -- deep purple, bright cream and near-black read
+   as three different things, not as a set.
+
+   The one to watch is the WRAP: lilac (Geetanjali) runs back
+   into the purple Cinepolis artwork. They are the same hue
+   family and only lightness separates them -- pale tint against
+   a saturated ground. It reads as a contrast rather than a
+   repeat at the sizes the neighbours peek at, but if another
+   card is ever added, put it between those two.
    ============================================================ */
 
 const FEATURED = [
+  {
+    store: 'CINÉPOLIS',
+    category: 'Entertainment',
+    floors: ['3f'],
+    /* Another finished banner, like Rajwada Bhog below -- it carries its
+       own logo, its own "NOW OPEN" headline and its own address line, so
+       `creativeBare` strips off everything the card would otherwise add
+       and leaves the artwork plus the category and the floor.
+
+       Supplied at 1600x900 (16:9), which the 3:2 card would crop on its
+       own and from the centre. Cropped here instead, to 1350x900, taking
+       all 250px off the RIGHT: the left column is a designed layout --
+       logo, pill, address, feature strip, measured at x 96-819 -- and
+       cutting into it would slice type, while the right side is a
+       photograph of the auditorium that simply tightens. Nothing is
+       half-showing and no creativeFocus is needed.
+
+       It reserves its space the same way Rajwada Bhog does: empty ground
+       above the logo (content starts 15.3% down) and below the feature
+       strip (content ends at 86%), both clear of the left margin at
+       7.1%. So it reuses .spot-card--art rather than needing a rule of
+       its own -- see the bottom-padding note there.
+
+       `dark` because the ground is deep purple: the kicker and the floor
+       marker flip to their light variants. */
+    creative: 'assets/creatives/cinepolis.jpg',
+    creativeBare: true,
+    dark: true,
+    brand: { bg: '#8A2DD4', ink: '#FBB50F' }
+  },
   {
     store: 'RAJWADA BHOG',
     category: 'Restaurants',
@@ -101,14 +138,6 @@ const FEATURED = [
     logo: 'assets/brands/punjab-grill.svg',
     dark: true,
     brand: { bg: '#17120C', ink: '#C9A227' }
-  },
-  {
-    store: 'VIVO',
-    category: 'Mobile & Electronics',
-    floors: ['con'],
-    headline: 'Smartphones & more',
-    logo: 'assets/brands/vivo.png',
-    brand: { bg: '#D3E6F7', ink: '#0070B8' }
   },
   {
     store: 'BABYSHOP',
